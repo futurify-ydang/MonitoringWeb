@@ -1,0 +1,306 @@
+<div id="products" class="page-layout carded fullwidth">
+
+    <!-- TOP BACKGROUND -->
+    <!-- <div class="top-bg accent"></div> -->
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header" fxLayout="row" fxLayoutAlign="space-between center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/meeting/list'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <!-- <div class="product-image mr-8 mr-sm-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    <img [src]="'assets/images/ecommerce/product-image-placeholder.png'">
+                </div> -->
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        {{'detail.edit_meeting' | translate}}
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='new'">
+                        {{ 'detail.newmeeting' | translate}}
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>{{ 'detail.meetingdetail' | translate}}</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+            <button mat-raised-button class="save-product-button mat-accent" *ngIf="pageType ==='new'"
+                (click)="addMeeting()">
+                <span> {{ 'detail.add' | translate}}</span>
+            </button>
+
+            <button mat-raised-button class="save-product-button mat-accent" *ngIf="pageType ==='edit'"
+                (click)="saveMeeting()">
+                <span> {{ 'detail.save' | translate}}</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+
+        <mat-tab-group (selectedTabChange)="tabChangeEvent($event)">
+            <mat-tab label="{{ 'detail.tab_information' | translate }}">
+                <div class="content p-24">
+                    <div class="mb-24" fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="space-between">
+
+                        <!-- FORM  Info-->
+                        <form fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="space-between" name="meetingForm"
+                            #meetingForm="ngForm">
+                            <div class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start"
+                                fxFlex="48">
+
+                                <div class="h2 mb-12"><b><u>{{ 'detail.meetinginfo' | translate}} :</u></b></div>
+                                <mat-error class="mb-12" *ngIf="(groups$ | async)?.length==0 && !isCoordinator">
+                                    {{ 'detail.error.group.no_groups' | translate}}
+                                </mat-error>
+                                <!-- meeting date -->
+                                <div fxLayout="row wrap" fxLayoutAlign="space-between">
+                                    <!-- meeting date  -->
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'detail.meetingdate' | translate}}</mat-label>
+                                        <input matInput name="meetingDate" [matDatepicker]='meetingDate'
+                                            [formControl]="meetingDateControl" placeholder="Choose a date"
+                                            [(ngModel)]="meeting.MeetingDate" [disabled]="!canEdit">
+                                        <mat-datepicker-toggle matSuffix [for]="meetingDate"></mat-datepicker-toggle>
+                                        <mat-datepicker #meetingDate></mat-datepicker>
+                                    </mat-form-field>
+
+                                    <!-- duration -->
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="pr-4">
+                                        <mat-label>{{ 'detail.duration' | translate}}</mat-label>
+                                        <mat-select placeholder="{{ 'detail.chooseduration' | translate}}"
+                                            name="duration" [formControl]="durationControl"
+                                            [(ngModel)]="meeting.Duration" [disabled]="!canEdit">
+                                            <mat-option *ngFor="let duration of durations" [value]="duration">
+                                                {{duration}} {{ 'detail.mins' | translate}}
+                                            </mat-option>
+                                            <mat-option [value]=480>more</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                </div>
+
+                                <!-- group name -->
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="100" class="pr-4">
+                                        <mat-label>{{ 'detail.groupname' | translate}}</mat-label>
+                                        <input type="text" placeholder="{{ 'detail.choosegroup' | translate}}" matInput
+                                            [formControl]="keywordsSearchGroupControl" [matAutocomplete]="autogroup" [disabled]="!canEdit">
+                                        <mat-autocomplete #autogroup="matAutocomplete"
+                                            [displayWith]="getValueOfTextFieldGroupAutoComplete">
+                                            <mat-option *ngFor="let group of groups$ | async" [value]="group">
+                                                {{group.Name}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                        <mat-error>
+                                            {{ 'detail.error.group.required' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <!-- trainer options and location -->
+                                <div fxLayout="row wrap" fxLayoutAlign="space-between">
+
+                                    <!-- trainer name -->
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="pr-4">
+                                        <mat-label>{{ 'detail.trainername' | translate}}</mat-label>
+                                        <input type="text" placeholder="{{ 'detail.choosetrainer' | translate}}"
+                                            matInput [formControl]="keywordsSearchTrainerControl"
+                                            [matAutocomplete]="autotrainer" [disabled]="!canEdit">
+                                        <mat-autocomplete #autotrainer="matAutocomplete"
+                                            [displayWith]="getValueOfTextFieldTrainerAutoComplete">
+                                            <mat-option *ngFor="let trainer of trainers$ | async" [value]="trainer">
+                                                {{trainer.FullName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                        <mat-error>
+                                            {{ 'detail.error.trainer.required' | translate }}
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                    <!-- location -->
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="pr-4">
+                                        <mat-label>{{ 'detail.location' | translate}}</mat-label>
+                                        <input type="text" matInput [formControl]="locationControl"
+                                            [(ngModel)]="location">
+                                    </mat-form-field>
+                                </div>
+                                <!-- Number of participants -->
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="pr-4">
+                                        <mat-label>{{ 'detail.number_of_participants' | translate}}</mat-label>
+                                        <input type="number" matInput [formControl]="numberOfParticipantsControl"
+                                            [(ngModel)]="meeting.NumberOfParticipants"
+                                            placeholder="{{ 'detail.number_of_participants' | translate}}" [disabled]="!canEdit">
+                                    </mat-form-field>
+                                </div>
+                                <!-- / Number of participants -->
+                                <!-- Description -->
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>{{ 'detail.note' | translate}} :</mat-label>
+                                        <textarea matInput placeholder="{{ 'detail.note' | translate}}"
+                                            name="description" [formControl]="descriptionControl" matTextareaAutosize
+                                            matAutosizeMinRows=6 matAutosizeMaxRows=6
+                                            [(ngModel)]="meeting.Description" [disabled]="!canEdit"></textarea>
+                                    </mat-form-field>
+                                </div>
+                                <!-- / Description -->
+                                <!-- Upload image -->
+                                <div class="list-image hover-board">
+                                    <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                        <!-- list image -->
+                                        <div *ngFor="let url of imagePaths; let i = index">
+                                            <div class="meeting-image" fxLayout="column" fxLayoutAlign="center center">
+                                                <img class="media" [src]="api_host + url">
+                                                <mat-icon class="clear-image" (click)="removeImage(url,i)" color="warn">
+                                                    clear</mat-icon>
+                                            </div>
+                                        </div>
+
+                                        <!-- button add new image -->
+                                        <div class="meeting-image add-new" fxLayout="column"
+                                            fxLayoutAlign="center center" (click)="fileInput.click()">
+                                            <input hidden type="file" accept="image/*" #fileInput multiple
+                                                (change)="handleInputChange($event)" [disabled]="!canEdit" />
+                                            <div>
+                                                <button mat-fab color="warn" class="add-file-button"
+                                                    aria-label="Add file">
+                                                    <mat-icon>add_photo_alternate</mat-icon>
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <div>{{ 'detail.addimg' | translate}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- List Question -->
+                            <div class="mat-card form-errors-model p-24 mat-elevation-z4" fxLayout="column "
+                                fxLayoutAlign="start" fxFlex="48">
+                                <div class="h2 mb-24"><b><u>{{ 'detail.survey_detail' | translate}}</u></b></div>
+
+                                <!-- loop all question -->
+                                <div *ngFor="let formElement of surveyForm.FormElements; let i = index">
+
+                                    <div class="pb-24 font-size-16">
+                                        <p *ngFor="let trans of formElement.Translates">
+                                            <span *ngIf="trans.LanguageCode===currLanguage"><b><u>{{i+1}}. {{ 'detail.question'
+                                                        | translate}}: </u></b>
+                                                {{trans.Description}}</span>
+                                        </p>
+                                    </div>
+                                    <!-- short answer -->
+                                    <div *ngIf="formElement.ElementType === elementType.ShortAnswer">
+                                        <div fxLayout="row" fxLayoutAlign="right">
+                                            <mat-form-field appearance="outline" class="pr-4">
+                                                <mat-label>{{ 'detail.answer' | translate}}:</mat-label>
+                                                <input matInput [name]="'ShortAnswer'+ formElement.Id"
+                                                    placeholder="{{ 'detail.answer' | translate}}"
+                                                    [(ngModel)]="formElement.ShortAnswer" [disabled]="!canEdit"> 
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <!-- / short answer -->
+                                    <!-- multiple choise answer -->
+                                    <div *ngIf="formElement.ElementType === elementType.MultipleChoiceAnswer">
+                                        <div *ngFor="let option of formElement.Options">
+                                            <mat-form-field appearance="outline" class="pr-4">
+                                                <mat-label *ngFor="let trans of option.ListTranslate">
+                                                    <span
+                                                        *ngIf="trans.LanguageCode === currLanguage">{{trans.Caption}}</span>
+                                                </mat-label>
+                                                <input type="number" matInput
+                                                    [name]="'MultipleChoiceAnswer'+ formElement.Id + option.Id"
+                                                    placeholder="{{ 'detail.answer' | translate}}"
+                                                    [(ngModel)]="option.Answer" [disabled]="!canEdit">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <!-- / multiple choise answer -->
+                                    <!-- multiple choise -->
+                                    <div *ngIf="formElement.ElementType === elementType.MultipleChoice">
+                                        <mat-radio-group fxLayout="row wrap" [(ngModel)]="formElement.SelectedOptionId"
+                                            [name]="'MultipleChoice'+ formElement.Id" [disabled]="!canEdit">
+                                            <mat-radio-button fxFlex="100" *ngFor="let option of formElement.Options"
+                                                [value]="option.Id" class="p-12" [checked]="option.Answer === '1'">
+                                                <span *ngFor="let trans of option.ListTranslate">
+                                                    <span
+                                                        *ngIf="trans.LanguageCode===currLanguage">{{trans.Caption}}</span>
+                                                </span>
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+                                    <!-- / multiple choise -->
+                                </div>
+                            </div>
+
+                            <!-- / List Question -->
+                        </form>
+                        <!-- / FORM  Info -->
+                    </div>
+                    <!-- / CONTENT CARD -->
+
+                </div>
+            </mat-tab>
+            <mat-tab *ngIf="pageType ==='edit'" label="{{ 'detail.tab_history' | translate }}">
+                <!-- HISTORY -->
+                <div class="mat-card mat-elevation-z4 p-24" fxLayout="column">
+                    <div fxLayout="row" *ngFor="let history of histories" class="history-section">
+                        <a class="avatar">
+                            <img class="image"
+                                [src]=" (api_host + history.Avatar) || '/assets/images/avatars/no-image-icon-hi.png'" />
+                        </a>
+                        <div class="body">
+                            <div class="header" fxLayoutAlign="space-between">
+                                <div>
+                                    <strong>{{ history.UserName }} </strong>
+                                    <span
+                                        class="event-type">{{ (history.EventType == 0 ? 'detail.added' : 'detail.edited') | translate }}
+                                    </span>
+                                    <span class="name">{{ 'detail.meeting' | translate }}</span>
+                                </div>
+                                <div>
+                                    <small
+                                        class="datetime-time-ago">{{ history.EventDateUTC | amFromUtc | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss' | amTimeAgo }}</small>
+                                </div>
+                            </div>
+                            <small
+                                class="below-header">{{ history.EventDateUTC | amFromUtc | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss' }}</small>
+                            <div *ngIf="history.EventType == 2" class="detail">
+                                <ul>
+                                    <li *ngFor="let item of history.LogDetails">
+                                        <strong>{{ item.PropertyName }}</strong>:
+                                        <span class="original-value">{{ item.OriginalValue }}</span>&nbsp;
+                                        <span>{{ 'detail.changed_to' | translate }}</span>&nbsp;
+                                        <span class="new-value">{{ item.NewValue }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="histories == null">
+                        <span [translate]="'detail.no_history'"></span>
+                    </div>
+                    <div fxLayout="row" *ngIf="this.currentLengthHistory < this.totalLengthHistory">
+                        <a mat-raised-button class="mat-warn load-more"
+                            (click)="loadMore()">{{ 'detail.load_more' | translate }}</a>
+                    </div>
+                </div>
+                <!-- END - HISTORY -->
+            </mat-tab>
+        </mat-tab-group>
+        <!-- / CENTER -->
+
+    </div>

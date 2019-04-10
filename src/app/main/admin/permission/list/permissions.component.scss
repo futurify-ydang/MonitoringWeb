@@ -1,0 +1,98 @@
+:host {
+    .content {
+        form {
+            width: 100%;
+        }
+
+        .form-errors-model {
+            flex: 1;
+
+            code {
+                background: none !important;
+            }
+        }
+
+        .horizontal-stepper-wrapper,
+        .vertical-stepper-wrapper {
+            max-width: 800px;
+        }
+
+        .list-image {
+            border: 1px solid rgba(125, 125, 125, 0.37);
+            border-radius: 4px;
+
+            .meeting-image {
+                position: relative;
+
+                .media {
+                    object-fit: contain;
+                    height: 100%;
+                    width: auto;
+                    border: 2px solid rgba(26, 26, 26, 0.15);
+                }
+
+                .clear-image {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: red;
+                        transform: scale(1.35);
+                    }
+                }
+
+                min-width: 175px;
+                min-height: 175px;
+                width: 175px;
+                height: 175px;
+                padding: 2.5%;
+                margin: 16px;
+                border-radius: 8px;
+                background: rgba(161, 161, 161, 0.12);
+                transition: box-shadow 150ms ease-in;
+                border: 2px dashed rgba(26, 26, 26, 0.37);
+
+                &.add-new {
+                    cursor: pointer;
+                    background: rgba(0, 0, 0, 0.06);
+                    border: 1px dashed rgba(26, 26, 26, 0.37);
+
+                    &:hover {
+                        background: rgba(0, 0, 0, 0.1);
+                        border: 1px dashed rgba(26, 26, 26, 0.75);
+                    }
+
+                    ;
+                }
+            }
+        }
+
+        .hover-board {
+            &:hover {
+                border: 2px solid rgba(0, 0, 0, 1);
+                border-radius: 6px;
+            }
+
+            ;
+        }
+    }
+}
+
+button {
+    margin-right: 8px;
+}
+
+.f-right {
+    float: right !important;
+}
+
+
+.click-button {
+    cursor: pointer;
+}
+
+.mat-column-id{
+    flex: 0 0 75px;
+ }

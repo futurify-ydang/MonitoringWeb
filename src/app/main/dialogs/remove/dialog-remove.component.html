@@ -1,0 +1,5 @@
+<h1 mat-dialog-title>{{ 'COMMON.ARE_YOU_SURE' | translate }}</h1>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+    <a mat-button mat-dialog-close fxLayoutAlign="start center" (click)="onClose(false)">{{ 'COMMON.CLOSE' | translate }}</a>&nbsp;
+    <a mat-raised-button color="warn" class="submit-button" fxLayoutAlign="end center" (click)="onClose(true)">{{ 'COMMON.REMOVE' | translate }}</a>
+</div>

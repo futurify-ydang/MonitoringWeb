@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>{{data.title | translate}}</h1>
+<div mat-dialog-content fxLayout="column">
+    <form name="roleDetaiForm" novalidate>
+        <div fxLayout="column">
+            <div fxLayout="row" fxLayoutAlign="start center" class="form-with">
+                <mat-form-field appearance="outline" floatLabel="always" fxFlex="100" class="pr-4">
+                    <mat-label [translate]= "'PERMISSION.ROLE_NAME'"></mat-label>
+                    <input type="text" placeholder="{{ 'PERMISSION.ROLE_NAME' | translate }}" [formControl]="nameControl" matInput [(ngModel)]="roleDetail.name">
+                    <mat-error [translate]="'PERMISSION.ROLE_NAME_IS_REQUIRED'"></mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+    <a mat-button mat-dialog-close fxLayoutAlign="start center" (click)="onClose()">{{ 'COMMON.CLOSE' | translate }}</a>
+    <a mat-raised-button color="accent" class="submit-button" fxLayoutAlign="end center" (click)="saveRole()">{{ 'COMMON.SAVE' | translate }}</a>
+</div>

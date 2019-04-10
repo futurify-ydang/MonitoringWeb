@@ -1,0 +1,142 @@
+<div id="meetings" class="page-layout carded fullwidth">
+
+  <!-- TOP BACKGROUND -->
+  <!-- <div class="top-bg accent"></div> -->
+  <!-- / TOP BACKGROUND -->
+
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- HEADER -->
+    <div class="header" fxLayout="row" fxLayoutAlign="space-between center" fxLayout.gt-sm="row"
+      fxLayoutAlign.gt-sm="space-between center">
+
+      <!-- APP TITLE -->
+      <div class="">
+        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          {{ 'USER.user_title' | translate }}
+        </span>
+      </div>
+      <!-- / APP TITLE -->
+
+      <!-- ADD BUTTON -->
+      <button mat-raised-button [routerLink]="'/admin/user/create'" class="add-product-button mat-accent"
+        *ngIf="showCreateUser()">
+        <span>{{ 'USER.new_user' | translate }}</span>
+      </button>
+      <!-- / ADD BUTTON -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT CARD -->
+    <div class="content-card mat-card mat-elevation-z4 pl-24 pr-24 pt-12 mr-24" fxLayout="column">
+
+      <div class="div-search" fxLayout="column" fxLayoutAlign="start start" fxLayout.gt-sm="row"
+        fxLayoutAlign.gt-sm="space-between center">
+        <!-- trainer name -->
+        <div fxFlex="30"></div>
+        <!-- SEARCH -->
+        <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
+          <mat-label>{{ 'USER.search_for_user' | translate }}</mat-label>
+          <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon>search</mat-icon>
+            <input matInput placeholder="{{ 'USER.search_placeholder' | translate }}" #filter
+              [ngModel]="reqModelGetList.keywords" (ngModelChange)='searchKeywords(filter.value)'>
+          </div>
+        </mat-form-field>
+        <!-- / SEARCH -->
+
+
+      </div>
+      <mat-table  #table [dataSource]="dataSource" matSort [@animateStagger]="{value:'50'}">
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <mat-header-cell fxFlex="7%" *matHeaderCellDef>{{ 'USER.no' | translate }}</mat-header-cell>
+          <mat-cell fxFlex="7%" *matCellDef="let i = index;">
+            <p class="text-truncate">{{i + 1}}</p>
+          </mat-cell>
+        </ng-container>
+
+        <!-- FirstName Column -->
+        <ng-container matColumnDef="firstName">
+          <mat-header-cell fxFlex="10%" *matHeaderCellDef mat-sort-header>{{ 'USER.first_name' | translate }}
+          </mat-header-cell>
+          <mat-cell fxFlex="10%" *matCellDef="let user">
+            <p class="text-truncate">{{user.FirstName}}</p>
+          </mat-cell>
+        </ng-container>
+
+        <!-- LastName Column -->
+        <ng-container matColumnDef="lastName">
+          <mat-header-cell fxFlex="10%" *matHeaderCellDef mat-sort-header>{{ 'USER.last_name' | translate }}
+          </mat-header-cell>
+          <mat-cell fxFlex="10%" *matCellDef="let user">
+            <p class="text-truncate">{{user.LastName}}</p>
+          </mat-cell>
+        </ng-container>
+        <!-- role name Column -->
+        <ng-container matColumnDef="role">
+          <mat-header-cell fxFlex="10%" *matHeaderCellDef mat-sort-header>{{ 'USER.role' | translate }}
+          </mat-header-cell>
+          <mat-cell fxFlex="10%" *matCellDef="let user">
+            <p class="text-truncate">{{user.RoleName}}</p>
+          </mat-cell>
+        </ng-container>
+
+        <!-- First Login name Column -->
+        <ng-container matColumnDef="firstLogin">
+          <mat-header-cell fxFlex="10%" *matHeaderCellDef mat-sort-header>{{ 'USER.first_login' | translate }}
+          </mat-header-cell>
+          <mat-cell fxFlex="10%" *matCellDef="let user">
+            <p class="text-truncate">{{user.FirstLogin | date:'yyyy-MM-dd'}}</p>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Last Login Column -->
+        <ng-container matColumnDef="lastLogin">
+          <mat-header-cell fxFlex="10%" *matHeaderCellDef mat-sort-header>{{ 'USER.last_login' | translate }}
+          </mat-header-cell>
+          <mat-cell fxFlex="10%" *matCellDef="let user">
+            <p class="text-truncate">{{user.LastLogin | date:'yyyy-MM-dd'}}</p>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Number of meeting registered Column -->
+        <ng-container matColumnDef="numberOfMeetingRegistered">
+          <mat-header-cell fxFlex="13%" *matHeaderCellDef mat-sort-header>
+            {{ 'USER.number_of_meeting_registered' | translate }}</mat-header-cell>
+          <mat-cell fxFlex="13%" class="mat-cell-content-center" *matCellDef="let user">
+            <p class="text-truncate" fxLayoutAlign="center center">{{user.NumberOfMeetingRegistered}}</p>
+          </mat-cell>
+        </ng-container>
+
+        <!-- groups Column -->
+        <ng-container matColumnDef="groups">
+          <mat-header-cell fxFlex="20%" *matHeaderCellDef>{{ 'USER.groups' | translate }}</mat-header-cell>
+          <mat-cell fxFlex="20%" *matCellDef="let user">
+            <p class="text-truncate">{{user.GroupNames}}</p>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions" *ngIf="showActions()">
+          <mat-header-cell *matHeaderCellDef>{{ 'USER.actions' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let user">
+            <button mat-raised-button [routerLink]="'/admin/user/'+user.Id"
+              class="add-product-button mat-accent mt-24 mt-md-0" *ngIf="showEditUser()">
+              <span class="">{{ 'USER.edit' | translate }}</span>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+        <mat-row *matRowDef="let user; columns: displayedColumns;" class="product" matRipple></mat-row>
+
+      </mat-table>
+      <mat-paginator #paginator [pageIndex]="0" [pageSize]="100"></mat-paginator>
+
+    </div>
+    <!-- / CONTENT CARD -->
+  </div>
+  <!-- / CENTER -->
+</div>

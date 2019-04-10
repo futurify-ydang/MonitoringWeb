@@ -1,0 +1,113 @@
+<div id="products" class="page-layout carded fullwidth inner-scroll">
+
+  <!-- TOP BACKGROUND -->
+  <!-- <div class="top-bg accent"></div> -->
+  <!-- / TOP BACKGROUND -->
+
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- HEADER -->
+    <div class="header" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+      <!-- APP TITLE -->
+      <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          {{ 'export_meetings' | translate }}
+        </span>
+      </div>
+      <!-- / APP TITLE -->
+
+      <!-- BUTTONS -->
+      <div>
+        <button mat-raised-button class="add-product-button mat-accent mt-24 mt-md-0 mr-24" (click)="view()">
+          <span>{{ 'view' | translate }}</span>
+        </button>
+        <button mat-raised-button class="add-product-button mat-accent mt-24 mt-md-0" (click)="generateExcel()" [disabled]="!canExport">
+          <span>{{ 'export' | translate }}</span>
+        </button>
+      </div>
+      <!-- / BUTTONS -->
+
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT CARD -->
+    <div class="content-card mat-card mat-elevation-z4 p-24 mr-24" fxLayout="column" fusePerfectScrollbar>
+      <div>
+        <div fxLayout="row" fxLayoutAlign="end center">
+          <!-- filter by date -->
+          <!-- From -->
+          <mat-form-field fxFlex="20" class="mr-24" appearance="outline" floatLabel="always">
+            <mat-label> {{ 'from_date' | translate}}</mat-label>
+            <input matInput name="matFromDate" [matDatepicker]='matFromDate' placeholder="{{ 'choose_date' | translate}}"
+            [(ngModel)]="fromDate" (ngModelChange)="fromDateChangeEvents()">
+            <mat-datepicker-toggle matSuffix [for]="matFromDate"></mat-datepicker-toggle>
+            <mat-datepicker #matFromDate></mat-datepicker>
+          </mat-form-field>
+          <!-- To -->
+          <mat-form-field fxFlex="20" appearance="outline" floatLabel="always">
+            <mat-label> {{ 'to_date' | translate}}</mat-label>
+            <input matInput name="matToDate" [matDatepicker]='matToDate' placeholder="{{ 'choose_date' | translate}}"
+              [(ngModel)]="toDate" (ngModelChange)="toDateChangeEvents()">
+            <mat-datepicker-toggle matSuffix [for]="matToDate"></mat-datepicker-toggle>
+            <mat-datepicker #matToDate></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <div *ngIf="meetings.length == 0"><h2>{{ 'not_found_any_meetings' | translate}}</h2></div>
+      <div *ngIf="meetings.length > 0">
+        <table class="table border-left border-bottom border-black">
+          <thead>
+            <th class="border-top border-right border-black">
+              Meeting date
+            </th>
+            <th class="border-top border-right border-black">
+              Group Id
+            </th>
+            <th class="border-top border-right border-black">
+              Group Name
+            </th>
+            <th class="border-top border-right border-black">
+              Location
+            </th>
+            <th class="border-top border-right border-black">
+              Number of participants
+            </th>
+            <th class="border-top border-right border-black">
+              Questions
+            </th>
+          </thead>
+          <tr *ngFor="let meeting of meetings">
+            <td class="border-top border-right border-black">
+              {{meeting.MeetingDate}}
+            </td>
+            <td class="border-top border-right border-black">
+              {{meeting.GroupId}}
+            </td>
+            <td class="border-top border-right border-black">
+              {{meeting.GroupName}}
+            </td>
+            <td class="border-top border-right border-black">
+              {{meeting.Location}}
+            </td>
+            <td class="border-top border-right border-black">
+              {{meeting.NumberOfParticipants}}
+            </td>
+            <td class="border-top border-right border-black">
+              <p *ngFor="let question of meeting.Questions">
+                <span class="title">{{question.QuestionTitle}}<br></span>
+                <span *ngIf="question.ShortAnswer">&emsp;{{question.ShortAnswer}}<br></span>
+                <span *ngFor="let option of question.Options">
+                  <span class="title">&emsp;{{option.OptionTitle}}<br></span>
+                  <span>&emsp;{{option.OptionAnswer}}<br></span>
+                </span>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <!-- / CONTENT CARD -->
+  </div>
+  <!-- / CENTER -->
+</div>

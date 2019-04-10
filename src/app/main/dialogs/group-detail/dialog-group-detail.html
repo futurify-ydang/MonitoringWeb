@@ -1,0 +1,87 @@
+<h1 mat-dialog-title *ngIf="data.id">{{ 'detail.edit_group' | translate }}</h1>
+<h1 mat-dialog-title *ngIf="!data.id">{{ 'detail.new_group' | translate }}</h1>
+<div mat-dialog-content fxLayout="column">
+    <form name="groupDetaiForm" [formGroup]="groupForm" novalidate>
+        <div fxLayout="column">
+            <div fxLayout="row" fxLayoutAlign="start center" class="form-with">
+                <mat-form-field appearance="outline" floatLabel="always" fxFlex="100" class="pr-4">
+                    <mat-label>{{ 'detail.group_name' | translate }}</mat-label>
+                    <input type="text" placeholder="{{ 'detail.group_name' | translate }}" formControlName="name"
+                        matInput>
+                    <mat-error>
+                        {{ 'detail.error_group_name_required' | translate }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row">
+                <mat-form-field appearance="outline" floatLabel="always" class="example-form form-with">
+                    <mat-label>{{ 'detail.province' | translate }}</mat-label>
+                    <input type="text" placeholder="{{ 'detail.choose_province' | translate }}" matInput
+                        formControlName="provinceName" [matAutocomplete]="autoCompleteProvince">
+                    <mat-autocomplete #autoCompleteProvince="matAutocomplete">
+                        <mat-option *ngFor="let province of filteredProvinces | async" [value]="province.ProvinceName">
+                            {{province.ProvinceName}}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-error>
+                        {{ 'detail.error_province_required' | translate }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row">
+                <mat-form-field appearance="outline" floatLabel="always" class="example-form form-with" disabled="true">
+                    <mat-label>{{ 'detail.district' | translate }}</mat-label>
+                    <input type="text" placeholder="{{ 'detail.choose_district' | translate }}" matInput
+                        formControlName="districtName" [matAutocomplete]="autoCompleteDistrict">
+                    <mat-autocomplete #autoCompleteDistrict="matAutocomplete">
+                        <mat-option *ngFor="let district of filteredDistricts | async" [value]="district.DistrictName">
+                            {{district.DistrictName}}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-error>
+                        {{ 'detail.error_district_required' | translate }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row">
+                <mat-form-field appearance="outline" floatLabel="always" class="example-form form-with" disabled="true">
+                    <mat-label>{{ 'detail.commune' | translate }}</mat-label>
+                    <input type="text" placeholder="{{ 'detail.choose_commune' | translate }}" matInput
+                        formControlName="communeName" [matAutocomplete]="autoCompleteCommune">
+                    <mat-autocomplete #autoCompleteCommune="matAutocomplete">
+                        <mat-option *ngFor="let commune of filteredCommunes | async" [value]="commune.CommuneName">
+                            {{commune.CommuneName}}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-error>
+                        {{ 'detail.error_commune_required' | translate }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row">
+                <mat-form-field appearance="outline" floatLabel="always" class="example-form form-with">
+                    <mat-label>{{ 'detail.default_trainer' | translate }}</mat-label>
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input matInput placeholder="{{ 'detail.search_default_trainer' | translate }}"
+                            formControlName="groupleaderName" [matAutocomplete]="autoCompleteGroupleader">
+                        <mat-autocomplete #autoCompleteGroupleader="matAutocomplete">
+                            <mat-option *ngFor="let item of groupleaders" [value]="item.FullName">
+                                {{item.FullName + ' - ' + item.Phone}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </div>
+                </mat-form-field>
+            </div>
+        </div>
+
+    </form>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+    <a mat-button mat-dialog-close fxLayoutAlign="start center" (click)="onClose()">{{ 'detail.close' | translate }}</a>
+    <a mat-raised-button color="accent" class="submit-button" fxLayoutAlign="end center"
+        (click)="saveGroup()">{{ 'detail.save' | translate }}</a>
+</div>

@@ -1,0 +1,63 @@
+<mat-toolbar class="p-0 mat-elevation-z1">
+
+    <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start center">
+
+        <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="navbar-toggle-button" *ngIf="!hiddenNavbar && !rightNavbar" (click)="toggleSidebarOpen('navbar')"
+                fxHide.gt-md>
+                <mat-icon class="secondary-text">menu</mat-icon>
+            </button>
+        </div>
+
+        <div class="" fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="start center">
+
+            <button mat-button fxHide fxShow.gt-xs
+                    class="language-button"
+                    [matMenuTriggerFor]="languageMenu">
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <img class="flag mr-8" [src]="'assets/icons/flags/'+selectedLanguage.flag+'.png'">
+                    <span class="iso text-uppercase">{{selectedLanguage.id}}</span>
+                </div>
+            </button>
+
+            <mat-menu #languageMenu="matMenu">
+                <button mat-menu-item *ngFor="let lang of languages" (click)="setLanguage(lang)">
+                    <span fxLayout="row" fxLayoutAlign="start center">
+                        <img class="flag mr-16" [src]="'assets/icons/flags/'+lang.flag+'.png'">
+                        <span class="iso">{{lang.title}}</span>
+                    </span>
+                </button>
+            </mat-menu>
+
+            <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <img class="avatar mr-0 mr-sm-16" [src]="avatar">
+                    <span class="username mr-12" fxHide fxShow.gt-sm>{{fullName}}</span>
+                    <mat-icon class="s-16" fxHide.xs>keyboard_arrow_down</mat-icon>
+                </div>
+            </button>
+
+            <mat-menu #userMenu="matMenu" [overlapTrigger]="false">
+                <a mat-menu-item [routerLink]="'/my-profile/detail'">
+                    <mat-icon>account_circle</mat-icon>
+                    <span [translate]="'MENU.MY_PROFILE'"></span>
+                </a>
+                <a mat-menu-item class="" (click)="openChangePasswordDialog()">
+                    <mat-icon>vpn_key</mat-icon>
+                    <span [translate]="'MENU.CHANGE_PASSWORD'"></span>
+                </a>
+                <a mat-menu-item class="" (click)="openChangePhoneNumberDialog()">
+                    <mat-icon>local_phone</mat-icon>
+                    <span [translate]="'MENU.CHANGE_PHONE_NUMBER'"></span>
+                </a>
+                <a mat-menu-item class="" [routerLink]="'/auth/login'" (click)="logOut()">
+                    <mat-icon>exit_to_app</mat-icon>
+                    <span [translate]="'MENU.LOGOUT'"></span>
+                </a>
+            </mat-menu>
+
+        </div>
+
+    </div>
+
+</mat-toolbar>

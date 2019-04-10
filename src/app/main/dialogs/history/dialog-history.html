@@ -1,0 +1,39 @@
+<h1 mat-dialog-title [translate]="'HISTORY.TITLE'"></h1>
+<div mat-dialog-content fxLayout="column">
+    <div fxLayout="column">
+        <div fxLayout="row" *ngFor="let history of histories" class="history-section">
+            <a class="avatar">
+                <img class="image" [src]="history.Avatar || '/assets/images/avatars/no-image-icon-hi.png'" />
+            </a>
+            <div class="body">
+                <div class="header" fxLayoutAlign="space-between">
+                    <div>
+                        <strong>{{ history.UserName }} </strong>
+                        <span class="event-type">{{ history.EventType == 0 ? "Added" : "Edited" }} </span>
+                        <span class="name">{{ 'Metting' }}</span>
+                    </div>
+                    <div>
+                        <small class="datetime-time-ago">{{ history.EventDateUTC | amFromUtc | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss' | amTimeAgo }}</small>
+                    </div>
+                </div>
+                <small class="below-header">{{ history.EventDateUTC | amFromUtc | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss' }}</small>
+                <div *ngIf="history.EventType == 2" class="detail">
+                    <ul>
+                        <li *ngFor="let item of history.LogDetails">
+                            <strong>{{ item.PropertyName }}</strong>:
+                            <span class="original-value">{{ item.OriginalValue }}</span>&nbsp;
+                            <span>{{ 'changed to' }}</span>&nbsp;
+                            <span class="new-value">{{ item.NewValue }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" *ngIf="this.data.length < this.total">
+            <a mat-raised-button class="mat-warn load-more" (click)="loadMore()">{{ 'Load more' }}</a>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="center">
+    <a mat-button mat-dialog-close (click)="onClose()">{{ 'COMMON.CLOSE' | translate }}</a>
+</div>

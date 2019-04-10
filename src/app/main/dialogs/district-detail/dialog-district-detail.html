@@ -1,0 +1,37 @@
+<h1 mat-dialog-title *ngIf="data.id">{{ 'district.edit_district' | translate }}</h1>
+<h1 mat-dialog-title *ngIf="!data.id">{{ 'district.new_district' | translate }}</h1>
+<div mat-dialog-content fxLayout="column">
+    <form name="districtDetaiForm" novalidate>
+        <div fxLayout="column">
+            <div fxLayout="row" fxLayoutAlign="start center" class="form-with">
+                <mat-form-field appearance="outline" floatLabel="always" fxFlex="100" class="pr-4">
+                    <mat-label>{{ 'district.district_name' | translate }}</mat-label>
+                    <input type="text" placeholder="{{ 'district.district_name' | translate }}" [formControl]="nameControl" matInput [(ngModel)]="districtDetail.Name">
+                    <mat-error>
+                            {{ 'district.error_district_name_required' | translate }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="row wrap">
+            <mat-form-field appearance="outline" floatLabel="always" class="example-form form-with" fxFlex="100">
+                <mat-label>{{ 'district.province_name' | translate }}</mat-label>
+                <input type="text" placeholder="{{ 'district.choose_province' | translate }}" matInput [formControl]="provinceControl"
+                    [matAutocomplete]="autoprovince">
+                <mat-autocomplete #autoprovince="matAutocomplete">
+                    <mat-option *ngFor="let province of filteredProvinces | async" [value]="province.ProvinceName">
+                        {{province.ProvinceName}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <mat-error *ngIf="errorMessage !== ''">
+                {{errorMessage}}
+            </mat-error>
+        </div>
+    </form>
+
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+    <a mat-button mat-dialog-close fxLayoutAlign="start center" (click)="onClose()">{{ 'district.close' | translate }}</a>
+    <a mat-raised-button color="accent" class="submit-button" fxLayoutAlign="end center" (click)="saveDistrict()">{{ 'district.save' | translate }}</a>
+</div>

@@ -1,0 +1,13 @@
+.div-parent-charts{
+    white-space: nowrap;
+    .div-parent-chart{
+        display: inline-block;
+    }
+}
+.legend-label-color{
+    display: inline-block;
+    height: 15px;
+    width: 15px;
+    margin-right: 5px;
+    border-radius: 3px;
+}

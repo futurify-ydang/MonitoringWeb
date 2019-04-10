@@ -1,0 +1,27 @@
+<mat-form-field class="example-chip-list w-100-p" appearance="outline" floatLabel="always">
+  <mat-chip-list #chipList>
+    <mat-chip
+      *ngFor="let item of selectedDropdownItems"
+      [selectable]="selectable"
+      [removable]="removable"
+      (removed)="remove(item.value)">
+      {{item.text}}
+      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+    </mat-chip>
+    <input
+      #valueInput
+      [type]="type"
+      [placeholder]="placeholder"
+      [formControl]="elemntCtrl"
+      [matAutocomplete]="auto"
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      [matChipInputAddOnBlur]="addOnBlur"
+      (matChipInputTokenEnd)="add($event)">
+  </mat-chip-list>
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+    <mat-option *ngFor="let item of filteredList | async" [value]="item.value">
+      {{item.text}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

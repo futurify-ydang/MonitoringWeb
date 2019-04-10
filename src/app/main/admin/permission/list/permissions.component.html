@@ -1,0 +1,120 @@
+<div id="products" class="page-layout carded fullwidth">
+
+    <!-- TOP BACKGROUND -->
+    <!-- <div class="top-bg accent"></div> -->
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header" fxLayout="row" fxLayoutAlign="space-between center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h1" [translate]="'PERMISSION.TITLE'">
+
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+        </div>
+        <!-- / HEADER -->
+        <!-- CONTENT PERMISSION -->
+
+        <div class="content p-24">
+            <div class="mb-24" fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="space-between">
+
+                <!-- ROLES -->
+                <div class="mat-card mat-elevation-z4 p-24 mr-24" fxLayout="column" fxLayoutAlign="start" fxFlex="48">
+
+                    <div class="h2 mb-24">
+                        <b><u [translate]="'PERMISSION.ROLE_LIST'"></u></b>
+                        <button mat-raised-button class="save-product-button f-right mat-accent mb-24"
+                            (click)="openRoleDetailDialog()">
+                            <span [translate]="'COMMON.ADD'"></span>
+                        </button>
+                    </div>
+                    <mat-table class="products-table" #table [dataSource]="dataSource" matSort
+                        [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
+
+                        <!-- ID Column -->
+                        <ng-container matColumnDef="id">
+                            <mat-header-cell *matHeaderCellDef [translate]="'COMMON.NO'"></mat-header-cell>
+                            <mat-cell *matCellDef="let i = index;">
+                                <p class="text-truncate">{{i + 1}}</p>
+                            </mat-cell>
+                        </ng-container>
+
+                        <!-- Role name Column -->
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell  *matHeaderCellDef mat-sort-header>{{ 'PERMISSION.ROLE_NAME' | translate }}
+                            </mat-header-cell>
+                            <mat-cell class="click-button" *matCellDef="let role">
+                                <p class="text-truncate">{{role.Name}}</p>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="actions">
+                            <mat-header-cell fxFlex="60" *matHeaderCellDef [translate]="'COMMON.ACTIONS'"></mat-header-cell>
+                            <mat-cell fxFlex="60" *matCellDef="let role">
+                                <button mat-raised-button class=" mat-accent mt-24 mt-md-0"
+                                    (click)="getPermission(role.Id,role.Name)">
+                                    <span [translate]="'PERMISSION.PERMISSIONS'"></span>
+                                </button>
+                                <button mat-raised-button (click)="openRoleDetailDialog(role.Id)"
+                                    class="add-product-button mat-accent mt-24 mt-md-0">
+                                    <span [translate]="'COMMON.EDIT'"></span>
+                                </button>
+                                <button mat-raised-button color="warn" (click)="removeRole(role.Id)"
+                                    class="add-product-button mat-accent mt-24 mt-md-0">
+                                    <mat-icon mat-icon material-icons>delete_outline</mat-icon>
+                                </button>
+                            </mat-cell>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                        <mat-row *matRowDef="let role; columns: displayedColumns;" class="product" matRipple></mat-row>
+
+                    </mat-table>
+                    <mat-paginator #paginator [pageIndex]="0" [pageSize]="10"></mat-paginator>
+
+                </div>
+
+                <!-- / ROLES -->
+                <!-- PERMISSION -->
+                <div class="mat-card form-errors-model p-24 mat-elevation-z4" fxLayout="column " fxLayoutAlign="start"
+                    fxFlex="48" *ngIf="showPermissions">
+                    <div class="h2 mb-24"><b><u [translate]="'PERMISSION.PERMISSION_DETAIL'"></u>
+                            {{permissionTitle}}</b></div>
+                    <div>
+                        <mat-checkbox (change)="assignOrUnAssignAll($event.checked)"
+                            [checked]="this.rolePermissions?.IsAssignAll">{{ 'PERMISSION.SELECT_ALL' | translate }}
+                        </mat-checkbox>
+                    </div>
+
+
+                    <div *ngFor="let item of groupPermissions">
+                        <h3><b>{{ 'PERMISSION.GROUP.' + item.Name + '.NAME' | translate }}</b></h3>
+                        <mat-selection-list>
+                            <mat-list-option *ngFor="let child of item.Permissions" (click)="selected(child.Id)"
+                                [selected]="selectedPermission(child.Id)">
+                                {{ 'PERMISSION.GROUP.' + item.Name + '.' + child.Id | translate }}
+                            </mat-list-option>
+                        </mat-selection-list>
+                    </div>
+                    <!-- / PERMISSION -->
+
+                </div>
+            </div>
+            <!-- / CONTENT PERMISSION -->
+
+        </div>
+        <!-- / CENTER -->
+
+    </div>
+</div>

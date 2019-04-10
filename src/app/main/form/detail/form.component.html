@@ -1,0 +1,56 @@
+<div id="products" class="page-layout carded fullwidth inner-scroll">
+    <!-- CENTER -->
+    <div class="center" fusePerfectScrollbar>
+
+        <!-- HEADER -->
+        <div class="header" fxLayout="row" fxLayoutAlign="space-between center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div fxLayout="column" fxLayoutAlign="start start" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2">
+                            {{ 'edit_form' | translate }}
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span> {{ 'form_detail' | translate }}</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content p-24">
+            <div class="mb-24" fxLayout="row" fxLayoutAlign="center center">
+
+                <!-- FORM  Info-->
+                <form class="mat-card mat-elevation-z4 p-24 " fxLayout="column" fxLayoutAlign="start" fxFlex="80" fxFlex.gt-md="80">
+                    <div fxLayout="row">
+                        <div class="h2 mb-24" fxFlex="50">
+                            <b><u>{{ 'questions' | translate }}: </u></b>
+                        </div>
+                        <div class="h2 mb-24" fxFlex="50" fxLayoutAlign="end">
+                            <button mat-raised-button class="save-product-button mat-accent" (click)="save()">
+                                <span>{{ 'save' | translate }}</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div *ngFor="let item of questions; let i=index" class="pb-24">
+                        <app-question [(model)]="item" [index]="i" [maxIndex]="questions.length - 1" (addNew)="eventAddNewQuestion($event)" (delete)="eventDeleteQuestion($event)" (moveUp)="eventMoveUp($event)" (moveDown)="eventMoveDown($event)"></app-question>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="end center">
+                        <button mat-raised-button class="save-product-button mat-accent" (click)="save()">
+                            <span>{{ 'save' | translate }}</span>
+                        </button>
+                    </div>
+                </form>
+                <!-- / FORM  Info -->
+            </div>
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

@@ -1,0 +1,183 @@
+<div id="products" class="page-layout carded fullwidth">
+
+  <!-- TOP BACKGROUND -->
+  <!-- <div class="top-bg accent"></div> -->
+  <!-- / TOP BACKGROUND -->
+
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- HEADER -->
+    <div class="header" fxLayout="row" fxLayoutAlign="space-between center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+
+        <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/admin/user/list'">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+
+        <div fxLayout="column" fxLayoutAlign="start start" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          <div class="h2" *ngIf="pageType ==='edit'">
+            {{user.name}}
+          </div>
+          <div class="h2" *ngIf="pageType ==='new'">
+            {{'USER.new_user' | translate }}
+          </div>
+          <div class="subtitle secondary-text">
+            <span>{{'USER.user_detail' | translate }}</span>
+          </div>
+        </div>
+      </div>
+      <!-- / APP TITLE -->
+      <button mat-raised-button class="save-product-button mat-accent" *ngIf="pageType ==='new'" (click)="addUser()">
+        <span>{{'USER.ADD' | translate }}</span>
+      </button>
+
+      <button mat-raised-button class="save-product-button mat-accent" *ngIf="pageType ==='edit'" (click)="saveUser()">
+        <span>{{'USER.SAVE' | translate }}</span>
+      </button>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT CARD -->
+
+    <div class="content p-24">
+      <div class="mb-24" fxLayout="row" fxLayoutAlign="center center">
+        <!-- FORM  Info-->
+        <form class="mat-card mat-elevation-z4 p-24 " fxLayout="column" fxLayoutAlign="start" name="meetingForm"
+          [formGroup]="userForm" fxFlex="100" fxFlex.gt-md="80">
+
+          <div class="h2 mb-24"><b><u>{{'USER.user_info' | translate }}:</u></b></div>
+
+          <div fxLayout="row" fxLayoutAlign="right">
+            <!-- first name -->
+            <mat-form-field appearance="outline" class="p-12" fxFlex="50">
+              <mat-label>{{'USER.first_name' | translate }}:</mat-label>
+              <input matInput placeholder="{{'USER.first_name' | translate }}" name="firstName" formControlName="firstName">
+            </mat-form-field>
+            <!-- last name -->
+            <mat-form-field appearance="outline" class="p-12" fxFlex="50">
+              <mat-label>{{'USER.last_name' | translate }}:</mat-label>
+              <input matInput placeholder="{{'USER.last_name' | translate }}" name="lastName" formControlName="lastName">
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="right">
+
+            <!-- mobile number -->
+            <mat-form-field appearance="outline" class="p-12" fxFlex="50">
+              <mat-label>{{'USER.mobile_number' | translate }}:</mat-label>
+              <input matInput placeholder="{{'USER.mobile_number' | translate }}" name="mobileNumber" formControlName="mobileNumber" [readonly]="pageType ==='edit'">
+            </mat-form-field>
+            <!-- province -->
+            <mat-form-field appearance="outline" floatLabel="always" class="p-12" fxFlex="50">
+              <mat-label>{{'USER.province' | translate }}</mat-label>
+              <mat-select placeholder="{{'USER.choose_province' | translate }}" name="provinceId" formControlName="provinceId"
+                (selectionChange)="eventChangeProvince()" disableOptionCentering panelClass="myPanelClass">
+                <mat-option *ngFor="let item of provinces" [value]="item.Id">
+                  {{item.ProvinceName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <!-- district -->
+            <mat-form-field appearance="outline" floatLabel="always" class="p-12" fxFlex="50">
+              <mat-label>{{'USER.district' | translate }}</mat-label>
+              <mat-select placeholder="{{'USER.choose_district' | translate }}" name="districtId" formControlName="districtId"
+                (selectionChange)="eventChangeDistrict()" disableOptionCentering panelClass="myPanelClass" [disabled]="userForm.value?.provinceId < 1">
+                <mat-option [value]="null">Not Set</mat-option>
+                <mat-option *ngFor="let item of districts" [value]="item.Id">
+                  {{item.DistrictName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <!-- commune -->
+            <mat-form-field appearance="outline" floatLabel="always" class="p-12" fxFlex="50">
+              <mat-label>{{'USER.commune' | translate }}</mat-label>
+              <mat-select placeholder="{{'USER.choose_commune' | translate }}" name="communeId" formControlName="communeId"
+                disableOptionCentering panelClass="myPanelClass" [disabled]="userForm.value?.districtId < 1">
+                <mat-option [value]="null">Not Set</mat-option>
+                <mat-option *ngFor="let item of communes" [value]="item.Id">
+                  {{item.CommuneName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <!-- group -->
+            <mat-form-field appearance="outline" floatLabel="always" class="p-12" fxFlex="50">
+              <mat-label>{{'USER.group' | translate }}</mat-label>
+              <mat-select placeholder="{{'USER.choose_group' | translate }}" formControlName="groups" [disabled]="userForm.value?.districtId < 1"
+                multiple>
+                <mat-optgroup *ngFor="let item of selectListGroup" [label]="item.DistrictName + ' > ' + item.CommuneName">
+                  <mat-option *ngFor="let group of item.Groups" [value]="group">{{group.Name}}</mat-option>
+                </mat-optgroup>
+              </mat-select>
+            </mat-form-field>
+            <!-- Date of birth  -->
+            <mat-form-field appearance="outline" floatLabel="always" class="p-12" fxFlex="50">
+              <mat-label>{{'USER.date_of_birth' | translate }}</mat-label>
+              <input matInput name="dateOfBirth" formControlName='dateOfBirth' [matDatepicker]='dateOfBirth'
+                placeholder="{{'USER.choose_date' | translate }}">
+              <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
+              <mat-datepicker #dateOfBirth></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <!-- role -->
+            <mat-form-field appearance="outline" floatLabel="always" class="p-12" fxFlex="50">
+              <mat-label>{{'USER.role' | translate }}</mat-label>
+              <mat-select placeholder="{{'USER.choose_role' | translate }}" name="roleId" formControlName="roleId" disableOptionCentering
+                panelClass="myPanelClass">
+                <mat-option *ngFor="let item of roles" [value]="item.Id">
+                  {{item.Name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="50">
+              <!-- Choose location level type-->
+              <h3 class="pl-12 m-0" fxFlex="100">{{'USER.choose_location_level' | translate }}:</h3>
+              <mat-radio-group class="pl-24" formControlName="locationLevelType" fxFlex="100" (change)="eventChangeLocationlevel()">
+                <mat-radio-button [value]="1" class="pr-24 pb-24">{{'USER.all' | translate }}</mat-radio-button>
+                <mat-radio-button [value]="2" class="pr-24 pb-24">{{'USER.province' | translate }}</mat-radio-button>
+                <mat-radio-button [value]="3" class="pr-24 pb-24">{{'USER.district' | translate }}</mat-radio-button>
+                <mat-radio-button [value]="4" class="pr-24 pb-24">{{'USER.commune' | translate }}</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="start center">
+              <!-- status -->
+              <mat-form-field appearance="outline" floatLabel="always" class="p-12" fxFlex="50">
+                <mat-label>{{'USER.status' | translate }}</mat-label>
+                <mat-select placeholder="{{'USER.choose_status' | translate }}" name="status" formControlName="status" disableOptionCentering
+                  panelClass="myPanelClass">
+                  <mat-option [value]="1">{{'USER.active' | translate }}</mat-option>
+                  <mat-option [value]="2">{{'USER.stopped' | translate }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+          <div fxLayout="row" fxLayoutAlign="end center">
+            <button mat-raised-button class="save-product-button mat-accent" *ngIf="pageType ==='new'" (click)="addUser()">
+              <span>{{'USER.ADD' | translate }}</span>
+            </button>
+
+            <button mat-raised-button class="save-product-button mat-accent" *ngIf="pageType ==='edit'" (click)="saveUser()">
+              <span>{{'USER.SAVE' | translate }}</span>
+            </button>
+          </div>
+        </form>
+        <!-- / FORM  Info -->
+      </div>
+    </div>
+    <!-- / CONTENT CARD -->
+
+  </div>
+  <!-- / CENTER -->
+
+</div>

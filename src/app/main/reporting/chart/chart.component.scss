@@ -1,0 +1,41 @@
+
+$border: 1px solid black;
+.chart-container{
+    display: inline-block;
+}
+.chart-title{
+    padding-left: 12px;
+    padding-right: 12px;
+    box-sizing: border-box;
+}
+.div-chart-height{
+    height: var(--height);
+    box-sizing: border-box;
+    margin-right: 0;
+    width: 100%;
+}
+.chart-height-top{
+    height: attr(height)"px";
+}
+.chart-height-bottom{
+    height: attr(height)"px";
+}
+.div-chart-column{
+    width: 100%;
+}
+
+.bdt{
+    border-top: $border;
+}
+.bdl{
+    border-left: $border;
+}
+.bdr{
+    border-right: $border;
+}
+.bdb{
+    border-bottom: $border;
+}
+.bd {
+    border: $border;
+}

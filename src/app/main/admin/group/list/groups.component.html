@@ -1,0 +1,124 @@
+<div id="products" class="page-layout carded fullwidth">
+
+    <!-- TOP BACKGROUND -->
+    <!-- <div class="top-bg accent"></div> -->
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-12 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{ 'list.group' | translate }}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- ADD BUTTON -->
+            <button mat-raised-button (click)="openChangeGroupDialog()" class="add-product-button mat-accent mt-md-0" *ngIf="showCreateGroup()">
+                <span>{{ 'list.new_group' | translate }}</span>
+            </button>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card mat-card mat-elevation-z4 p-24 mr-24" fxLayout="column">
+            <div class="div-search" fxLayout="column" fxLayoutAlign="start start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+                <!-- trainer name -->
+                <div fxFlex="30"></div>
+                <!-- SEARCH -->
+                <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
+                    <mat-label>{{ 'list.search_for_group' | translate }}</mat-label>
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input matInput #filter placeholder="{{ 'list.search_placeholder' | translate }}"
+                            [ngModel]="reqModelGetList.keywords" (ngModelChange)='searchKeywords(filter.value)'>
+                    </div>
+                </mat-form-field>
+                <!-- / SEARCH -->
+            </div>
+            <mat-table class="products-table" #table [dataSource]="dataSource" matSort [@animateStagger]="{value:'50'}">
+
+                <!-- ID Column -->
+                <ng-container matColumnDef="id">
+                    <mat-header-cell fxFlex="7%" *matHeaderCellDef mat-sort-header>{{ 'list.no' | translate }}</mat-header-cell>
+                    <mat-cell fxFlex="7%" *matCellDef="let i = index;">
+                        <p class="text-truncate">{{i + 1}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- group name Column -->
+                <ng-container matColumnDef="name">
+                    <mat-header-cell fxFlex="20%" *matHeaderCellDef mat-sort-header>{{ 'list.group_name' | translate
+                        }}</mat-header-cell>
+                    <mat-cell fxFlex="20%" *matCellDef="let group">
+                        <!-- <p class="text-truncate">{{group.Name}}</p> -->
+                        <a [routerLink]="'/meeting/list/' + group.Name" target="_blank">{{group.Name}}</a>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Fisrt Meeting Column -->
+                <ng-container matColumnDef="firstMeeting">
+                    <mat-header-cell fxFlex="10%" *matHeaderCellDef mat-sort-header>{{ 'list.first_meeting' | translate
+                        }}</mat-header-cell>
+                    <mat-cell fxFlex="10%" *matCellDef="let group">
+                        <p class="text-truncate">{{group.FirstMeetingDate | date:'yyyy-MM-dd hh:mm'}}</p>
+                    </mat-cell>
+                </ng-container>
+
+
+                <!-- Last Meeting Column -->
+                <ng-container matColumnDef="lastMeeting">
+                    <mat-header-cell fxFlex="10%" *matHeaderCellDef mat-sort-header>{{ 'list.last_meeting' | translate
+                        }}</mat-header-cell>
+                    <mat-cell fxFlex="10%" *matCellDef="let group">
+                        <p class="text-truncate">{{group.LastMeetingDate | date:'yyyy-MM-dd hh:mm'}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Total Meeting Column -->
+                <ng-container matColumnDef="totalMeeting">
+                    <mat-header-cell fxFlex="10%" *matHeaderCellDef mat-sort-header>{{ 'list.total_meeting' | translate
+                        }}</mat-header-cell>
+                    <mat-cell fxFlex="10%" *matCellDef="let group">
+                        <p class="text-truncate">{{group.TotalOfMeeting}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Group Leader Column -->
+                <ng-container matColumnDef="leader">
+                    <mat-header-cell fxFlex="20%" *matHeaderCellDef mat-sort-header>{{ 'list.default_trainer' | translate
+                        }}</mat-header-cell>
+                    <mat-cell fxFlex="20%" *matCellDef="let group">
+                        <p class="text-truncate">{{group.GroupleaderName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="actions" *ngIf="showActions()">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'list.actions' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group">
+                        <button mat-raised-button (click)="openChangeGroupDialog(group.Id)" class="add-product-button mat-accent mt-24 mt-md-0" *ngIf="showEditGroup()">
+                            <span>{{ 'list.edit' | translate }}</span>
+                        </button>
+                        <button mat-raised-button color="warn" (click)="openRemoveDialog(group.Id)" class="add-product-button mat-accent mt-24 mt-md-0" *ngIf="showDeleteGroup()">
+                            <mat-icon mat-icon material-icons>delete_outline</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                <mat-row *matRowDef="let group; columns: displayedColumns;" class="product" matRipple></mat-row>
+
+            </mat-table>
+            <mat-paginator #paginator [pageIndex]="0" [pageSize]="100"></mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

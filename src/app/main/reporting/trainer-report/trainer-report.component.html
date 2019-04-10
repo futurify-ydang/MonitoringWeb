@@ -1,0 +1,155 @@
+<div id="product" class="page-layout carded fullwidth">
+    <!-- TOP BACKGROUND -->
+    <!-- <div class="top-bg accent"></div> -->
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div fxLayout="column" fxLayoutAlign="start start" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2">
+                        {{ 'trainer_report.trainer_report' | translate }}
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- ADD BUTTON -->
+            <button mat-raised-button (click)="showReport()" class="add-product-button mt-24 mt-md-0 mat-accent"
+                [disabled]="!authorize">
+                <span>{{ 'trainer_report.view_report' | translate }}</span>
+            </button>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <div class="tab-content p-24" fusePerfectScrollbar>
+                <form name="trainerReportForm" [formGroup]="trainerReportForm" class="product w-100-p" fxLayout="column"
+                    fxFlex>
+
+                    <div class="pl-12" fxLayout="row wrap">
+                        <!-- Choose province section-->
+                        <div class="div-view-report" fxLayout="row wrap" fxFlex="50">
+                            <div class="h2 pb-12" fxFlex="100">
+                                {{ 'trainer_report.caption_choose_province' | translate }}
+                            </div>
+                            <div class="pl-24" fxFlex="70">
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-select formControlName="provinceId" placeholder="-- {{ 'trainer_report.caption_all' | translate }} --">
+                                        <mat-option class="option-title" [value]="">-- {{ 'trainer_report.caption_all'
+                                            | translate }} --</mat-option>
+                                        <mat-option *ngFor="let item of provinces" class="option-title" [value]="item.Id">
+                                            {{item.ProvinceName}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- / Choose province section-->
+
+                        <!-- Choose district section-->
+                        <div class="div-view-report" fxLayout="row wrap" fxFlex="50">
+                            <div class="h2 pb-12" fxFlex="100">
+                                {{ 'trainer_report.caption_choose_district' | translate }}
+                            </div>
+                            <div class="pl-24" fxFlex="70">
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-select formControlName="districtId" placeholder="-- {{ 'trainer_report.caption_all' | translate }} --">
+                                        <mat-option class="option-title" [value]="">-- {{
+                                            'trainer_report.caption_all' | translate }} --</mat-option>
+                                        <mat-option *ngFor="let item of districts" class="option-title" [value]="item.Id">
+                                            {{item.DistrictName}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <!-- / Choose district section-->
+                        </div>
+
+                        <!-- Choose Commune section-->
+                        <div class="div-view-report" fxLayout="row wrap" fxFlex="50">
+                            <div class="h2 pb-12" fxFlex="100">
+                                {{ 'trainer_report.caption_choose_commune' | translate }}
+                            </div>
+                            <div class="pl-24" fxFlex="70">
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-select #element formControlName="communeId" placeholder="-- {{ 'trainer_report.caption_all' | translate }} --">
+                                        <mat-option class="option-title" [value]="">-- {{
+                                            'trainer_report.caption_all' | translate }} --</mat-option>
+                                        <mat-option *ngFor="let item of communes" class="option-title" [value]="item.Id">
+                                            {{item.CommuneName}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- / Choose Commune section-->
+
+                        <!-- Choose Group section-->
+                        <div class="div-view-report" fxLayout="row wrap" fxFlex="50">
+                            <div class="h2 pb-12" fxFlex="100">
+                                {{ 'trainer_report.caption_choose_group' | translate }}
+                            </div>
+                            <div class="pl-24" fxFlex="70">
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-select formControlName="groupId" placeholder="-- {{ 'trainer_report.caption_all' | translate }} --">
+                                        <mat-option class="option-title" [value]="">-- {{
+                                            'trainer_report.caption_all' | translate }} --</mat-option>
+                                        <mat-option *ngFor="let item of groups" class="option-title" [value]="item.Id">
+                                            {{item.GroupName}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- / Choose Group section-->
+
+                        <!-- Choose year section-->
+                        <div class="div-view-report" fxLayout="row wrap" fxFlex="100">
+                            <div class="h2 pb-24" fxFlex="100">
+                                {{ 'trainer_report.caption_choose_years' | translate }}
+                            </div>
+                            <div class="" fxLayout="row wrap" fxFlex="90">
+                                <mat-checkbox #element *ngFor="let item of years" fxLayoutAlign="center" (change)="updateTimeSelectedList(element)"
+                                    [value]="item.value" [checked]="item.selected" fxFlex="20" class="pb-12 pt-12"
+                                    [disabled]="!authorize">
+                                    {{item.value}}
+                                </mat-checkbox>
+                            </div>
+                            <mat-error *ngIf="trainerReportForm.get('years').hasError('required')">
+                                {{ 'trainer_report.error_choose_years' | translate }}
+                            </mat-error>
+                        </div>
+                        <!-- / Choose year section-->
+                    </div>
+                    <div #containerReport class="pt-36 pl-12 div-view-report" fxLayout="row wrap" *ngIf="isShow">
+                        <!-- EXPORT BUTTON -->
+                        <div class="mat-title pb-12" fxFlex="100" fxLayoutAlign="end">
+                            <button mat-raised-button (click)="clickExportExcel()" class="add-product-button mt-24 mt-md-0 mat-accent">
+                                <span>{{ 'trainer_report.export_excel' | translate }}</span>
+                            </button>
+                        </div>
+                        <!-- / EXPORT BUTTON -->
+                        <div class="mat-title pb-12" fxFlex="100" fxLayoutAlign="center">
+                            {{ 'trainer_report.caption_report' | translate }}
+                        </div>
+                        <app-grouped-bar-chart [model]="reportModel" [isVertical]="false" legendTitle="{{ 'trainer_report.years' | translate }}"
+                            [showYAxisLabel]="true" yAxisLabel="{{ 'trainer_report.yAxisLabel' | translate }}" [showXAxisLabel]="true" xAxisLabel="{{ 'trainer_report.xAxisLabel' | translate }}"
+                            fxFlex="100" [showDataLabel]="true">
+                        </app-grouped-bar-chart>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

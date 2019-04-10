@@ -1,0 +1,134 @@
+<form name="questionForm" #questionForm="ngForm">
+
+    <mat-card>
+        <mat-card-header fxLayout="row" fxLayoutAlign="end">
+            <div>
+                <button *ngIf="index > 0" class="save-product-button w-36 p-0 c-black" mat-button (click)="eventClickMoveUp()">
+                    <mat-icon class="secondary-text s-28 mat-icon material-icons">arrow_drop_up</mat-icon>
+                </button>
+                <button *ngIf="index < maxIndex" class="save-product-button w-36 p-0 c-black" mat-button (click)="eventClickMoveDown()">
+                    <mat-icon class="secondary-text s-28 mat-icon material-icons">arrow_drop_down</mat-icon>
+                </button>
+                <button class="save-product-button w-36 p-0 c-black" mat-button (click)="eventClickDelete()">
+                    <mat-icon class="secondary-text s-24 mat-icon material-icons">close</mat-icon>
+                </button>
+            </div>
+        </mat-card-header>
+        <mat-card-content>
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-form-field>
+                    <mat-select [(ngModel)]="model.ElementType" [ngModelOptions]="{standalone: true}" (selectionChange)="eventChangeQuestionType()"
+                        disableOptionCentering panelClass="myPanelClass" placeholder="{{ 'choose_question_type' | translate }}" required>
+                        <mat-option *ngFor="let item of questionTypes" [value]="item.Id">
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <!-- Description  -->
+            <div fxLayout="row wrap" fxLayoutAlign="start center">
+                <div class="" *ngFor="let item of model.ListTranslate; let i = index" fxLayout="row wrap" fxLayoutAlign="start center"
+                    fxFlex="100">
+
+                    <div fxFlex="20">
+                        <h3 *ngIf="item.LanguageCode === 'EN'">{{ 'english' | translate }}:</h3>
+                        <h3 *ngIf="item.LanguageCode === 'VI'">{{ 'vietnamese' | translate }}:</h3>
+                    </div>
+                    <mat-form-field class="pr-12" fxFlex="40">
+                        <input matInput [name]="model.Id + 'question' + i" [(ngModel)]="item.Description" (change)="eventUpdateModel()"
+                            placeholder="{{ 'description' | translate }}" required>
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- / Description  -->
+
+            <!-- Short Answer section-->
+            <div class="pl-12" *ngIf="model.ElementType == 1" fxLayout="row wrap" fxLayoutAlign="start center ">
+                <mat-form-field fxFlex="50">
+                    <input matInput placeholder="{{ 'short_answer' | translate }}" disabled>
+                </mat-form-field>
+            </div>
+            <!-- / Short Answer section-->
+
+            <!-- Multiple Choice Answer section-->
+            <div class="pl-12" *ngIf="model.ElementType == 2" fxLayout="row wrap" fxLayoutAlign="start center ">
+                <h3>{{ 'answers' | translate }}: </h3>
+                <div class="pb-24 pl-12" *ngFor="let item of model.ListOption; let idxOption = index" fxLayout="row wrap"
+                    fxLayoutAlign="start center" fxFlex="100">
+                    <div *ngFor="let itemTranslate of item.ListTranslate; let idxTrans = index" fxLayout="row wrap"
+                        fxLayoutAlign="start center" fxFlex="100">
+                        <!-- button new option -->
+                        <div fxFlex="20">
+                            <button *ngIf="idxTrans == 0" class="w-36 p-0" mat-button (click)="eventClickAddOption(idxOption)">
+                                <mat-icon class="secondary-text s-28 mat-icon material-icons ">add_circle_outline</mat-icon>
+                            </button>
+                            <button *ngIf="idxTrans == 0" class="w-36 p-0" mat-button (click)="eventClickDeleteOption(idxOption)">
+                                <mat-icon class="secondary-text s-30 mat-icon material-icons ">delete</mat-icon>
+                            </button>
+                        </div>
+
+                        <div fxFlex="20">
+                            <h3 *ngIf="itemTranslate.LanguageCode === 'EN'">{{ 'english' | translate }}:</h3>
+                            <h3 *ngIf="itemTranslate.LanguageCode === 'VI'">{{ 'vietnamese' | translate }}:</h3>
+                        </div>
+
+                        <mat-form-field class="pr-12" fxFlex="30">
+                            <input matInput [name]="model.Id + 'answer' + itemTranslate.LanguageCode + item.Id + item.Unique" [(ngModel)]="itemTranslate.Caption"
+                                (change)="eventUpdateModel()" placeholder="{{ 'caption' | translate }}" required>
+                        </mat-form-field>
+
+                        <mat-form-field class="pr-12" fxFlex="15">
+                            <mat-label>{{ 'answer' | translate }}:</mat-label>
+                            <input matInput placeholder="{{ 'answer' | translate }}" disabled>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+            </div>
+            <!-- / Multiple Choice Answer section-->
+
+            <!-- Multiple Choice section-->
+            <div class="pl-12" *ngIf="model.ElementType == 3" fxLayout="row wrap" fxLayoutAlign="start center ">
+                <h3>{{ 'answers' | translate }}: </h3>
+                <div class="pb-24 pl-12" *ngFor="let item of model.ListOption; let idxOption = index" fxLayout="row wrap"
+                    fxLayoutAlign="start center" fxFlex="100">
+                    <div *ngFor="let itemTranslate of item.ListTranslate; let idxTrans = index" fxLayout="row wrap"
+                        fxLayoutAlign="start center" fxFlex="100">
+
+                        <!-- button new option -->
+                        <div fxFlex="20">
+                            <button *ngIf="idxTrans == 0" class="w-36 p-0" mat-button (click)="eventClickAddOption(idxOption)">
+                                <mat-icon class="secondary-text s-28 mat-icon material-icons ">add_circle_outline</mat-icon>
+                            </button>
+                            <button *ngIf="idxTrans == 0" class="w-36 p-0" mat-button (click)="eventClickDeleteOption(idxOption)">
+                                <mat-icon class="secondary-text s-30 mat-icon material-icons ">delete</mat-icon>
+                            </button>
+                        </div>
+                        <div fxFlex="10">
+                            <mat-radio-button *ngIf="idxTrans == 0" disabled></mat-radio-button>
+                        </div>
+
+                        <!-- choose language -->
+                        <div fxFlex="20">
+                                <h3 *ngIf="itemTranslate.LanguageCode === 'EN'">{{ 'english' | translate }}:</h3>
+                                <h3 *ngIf="itemTranslate.LanguageCode === 'VI'">{{ 'vietnamese' | translate }}:</h3>
+                            </div>
+
+                        <mat-form-field class="pr-12" fxFlex="35">
+                            <input matInput [name]="model.Id + 'answer' + itemTranslate.LanguageCode + idxOption + item.Id + item.Unique" [(ngModel)]="itemTranslate.Caption"
+                                (change)="eventUpdateModel()" placeholder="{{ 'answer' | translate }} ... " required>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+            </div>
+            <!-- / Multiple Choice section-->
+
+
+        </mat-card-content>
+        <mat-card-actions>
+            <button class="save-product-button mat-accent" mat-raised-button (click)="eventClickAddNewQuestion()">{{ 'add_new_question' | translate }}</button>
+        </mat-card-actions>
+    </mat-card>
+</form>

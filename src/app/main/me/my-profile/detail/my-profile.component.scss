@@ -1,0 +1,139 @@
+:host {
+    .content {
+        form {
+            width: 100%;
+        }
+
+        .form-errors-model {
+            flex: 1;
+
+            code {
+                background: none !important;
+            }
+        }
+
+        .horizontal-stepper-wrapper,
+        .vertical-stepper-wrapper {
+            max-width: 800px;
+        }
+
+        .list-image {
+            border: 1px solid rgba(125, 125, 125, 0.37);
+            border-radius: 4px;
+
+            .meeting-image {
+                position: relative;
+
+                .media {
+                    object-fit: contain;
+                    height: 100%;
+                    width: auto;
+                    border: 2px solid rgba(26, 26, 26, 0.15);
+                }
+
+                .clear-image {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: red;
+                        transform: scale(1.35);
+                    }
+                }
+
+                min-width: 175px;
+                min-height: 175px;
+                width: 175px;
+                height: 175px;
+                padding: 2.5%;
+                margin: 16px;
+                border-radius: 8px;
+                background: rgba(161, 161, 161, 0.12);
+                transition: box-shadow 150ms ease-in;
+                border: 2px dashed rgba(26, 26, 26, 0.37);
+
+                &.add-new {
+                    cursor: pointer;
+                    background: rgba(0, 0, 0, 0.06);
+                    border: 1px dashed rgba(26, 26, 26, 0.37);
+
+                    &:hover {
+                        background: rgba(0, 0, 0, 0.1);
+                        border: 1px dashed rgba(26, 26, 26, 0.75);
+                    }
+
+                    ;
+                }
+            }
+        }
+
+        .hover-board {
+            &:hover {
+                border: 2px solid rgba(0, 0, 0, 1);
+                border-radius: 6px;
+            }
+
+            ;
+        }
+    }
+}
+
+.img-square{
+    max-width:215px!important;
+    margin-left:10px;
+}
+
+.box-avatar {
+    height: 552px;
+}
+
+.box-avatar .avatar {
+    width: 180px;
+    height: 180px;
+    margin: 0 !important;
+    margin: 30px 0 40px 0 !important;
+}
+
+.box-avatar .change-avatar {
+    width: 200px;
+}
+
+
+.box-avatar .change-avatar span {
+    margin: 40px;
+}
+
+@media (min-width:1280px) and (max-width: 1630px) {
+    .box-avatar .change-avatar .camera-icon {
+        display:none!important
+    }
+
+    .box-avatar .change-avatar span {
+        margin: 0px!important;
+    }
+}
+
+@media screen and (max-width: 1279px) {
+    .box-avatar .change-avatar {
+        padding-bottom: 9px !important;
+    }
+
+    .box-avatar .avatar {
+        width: 140px;
+        height: 140px;
+        margin: 30px 0 40px 0 !important;
+    }
+}
+
+.p-r{
+    position:relative;
+}
+
+.p-a{
+    position:absolute;
+    top:0;
+    right:0;
+    cursor:pointer;
+}

@@ -1,0 +1,157 @@
+<div id="products" class="page-layout carded fullwidth">
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header" fxLayout="row" fxLayoutAlign="space-between center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h1">
+                        {{ 'detail.title' | translate}}
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+            <button mat-raised-button (click)="saveProfile()" class="save-product-button mat-accent">
+                <span>{{ 'detail.save' | translate}}</span>
+            </button>
+
+        </div>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content p-24">
+            <div class="mb-24" fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="space-between" fxFlex="90">
+                <!-- AVATAR  Info-->
+                <div class="mat-card mat-elevation-z4  p-24 box-avatar" fxLayout="column" fxLayoutAlign="start"
+                    fxFlex="20">
+
+                    <div fxLayout="column" class="p-r" fxLayoutAlign="center center">
+                        <img class="avatar" [src]="safeImgDataUrls" />
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="center" (click)="fileInput.click()">
+                        <input hidden type="file" accept="image/*" #fileInput
+                            (change)="handleInputChange($event)" />
+                        <button mat-raised-button class="save-product-button mat-accent change-avatar">
+                            <span>{{ 'detail.upload' | translate}}</span>
+                            <mat-icon class="mat-icon material-icons camera-icon" role="img" aria-hidden="true">
+                                camera_alt</mat-icon>
+                        </button>
+                    </div>
+
+                </div>
+                <!-- / AVATAR  Info -->
+                <!-- FORM  Info-->
+                <form class="mat-card mat-elevation-z4 p-24 " fxLayout="column" fxLayoutAlign="start" fxFlex="74">
+
+                    <div class="h2 mb-24"><b><u>{{ 'detail.userinfo' | translate}} :</u></b></div>
+
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <!-- last name -->
+                        <mat-form-field appearance="outline" floatLabel="always" class="p-12" fxFlex="48">
+                            <mat-label>{{ 'detail.firstname' | translate}}:</mat-label>
+                            <input matInput type="text" placeholder="First Name" [formControl]="firstNameControl"
+                                required [(ngModel)]="profile.FirstName">
+                            <mat-error>
+                                {{ 'detail.error.firstname.required' | translate}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <!-- last name -->
+                        <mat-form-field appearance="outline" floatLabel="always" class="p-12" fxFlex="48">
+                            <mat-label>{{ 'detail.lastname' | translate}}:</mat-label>
+                            <input matInput type="text" placeholder="Last Name" [formControl]="lastNameControl" required
+                                [(ngModel)]="profile.LastName">
+                            <mat-error>
+                                {{ 'detail.error.lastname.required' | translate}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <!-- mobile number -->
+                        <mat-form-field appearance="outline" floatLabel="always" class="p-12" fxFlex="48">
+                            <mat-label>{{ 'detail.mobilenumber' | translate}}:</mat-label>
+                            <input matInput placeholder="Mobile numer" [formControl]="mobileControl" [readonly]="true"
+                                [(ngModel)]="profile.MobileNumber">
+                            <mat-error>
+                                {{ 'detail.error.mobilenumber.required' | translate}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <!-- province -->
+                        <mat-form-field appearance="outline" floatLabel="always" class="p-12" fxFlex="48">
+                            <mat-label>{{ 'detail.province' | translate}}</mat-label>
+                            <input type="text" placeholder="Choose province" matInput [formControl]="provinceControl"
+                                [matAutocomplete]="autoprovince" [(ngModel)]="profile.Province.Name" [readonly]="!isCoordinator">
+                            <mat-autocomplete #autoprovince="matAutocomplete">
+                                <mat-option *ngFor="let province of filteredProvinces | async"
+                                    [value]="province.ProvinceName">
+                                    {{province.ProvinceName}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <!-- district -->
+
+                        <mat-form-field appearance="outline" floatLabel="always" class="p-12" fxFlex="48">
+                            <mat-label>{{ 'detail.district' | translate}}</mat-label>
+                            <input type="text" placeholder="Choose districts" matInput [formControl]="districtControl"
+                                [matAutocomplete]="autodistrict" [(ngModel)]="profile.District.Name" [readonly]="!isCoordinator">
+                            <mat-autocomplete #autodistrict="matAutocomplete">
+                                <mat-option *ngFor="let district of filteredDistricts | async"
+                                    [value]="district.DistrictName">
+                                    {{district.DistrictName}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <!-- commune -->
+                        <mat-form-field appearance="outline" floatLabel="always" class="p-12" fxFlex="48">
+                            <mat-label>{{ 'detail.commune' | translate}}</mat-label>
+                            <input type="text" placeholder="Choose commune" matInput [formControl]="communeControl"
+                                [matAutocomplete]="autocommune" [(ngModel)]="profile.Commune.Name" [readonly]="!isCoordinator">
+                            <mat-autocomplete #autocommune="matAutocomplete">
+                                <mat-option *ngFor="let commune of filteredCommunes | async"
+                                    [value]="commune.CommuneName">
+                                    {{commune.CommuneName}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <!-- born date  -->
+                        <mat-form-field appearance="outline" floatLabel="always" class="p-12" fxFlex="48">
+                            <mat-label>{{ 'detail.born' | translate}}</mat-label>
+                            <input matInput name="born" [formControl]="bormControl" [matDatepicker]='born'
+                                placeholder="Choose a date" [(ngModel)]="profile.DateOfBirth">
+                            <mat-datepicker-toggle matSuffix [for]="born"></mat-datepicker-toggle>
+                            <mat-datepicker #born></mat-datepicker>
+
+                        </mat-form-field>
+
+                        <!-- role -->
+                        <mat-form-field appearance="outline" floatLabel="always" class="p-12" fxFlex="48">
+                            <mat-label>{{ 'detail.role' | translate}}</mat-label>
+                            <input type="text" placeholder="Choose role" matInput [formControl]="roleControl"
+                                [(ngModel)]="profile.Role.Name">
+                        </mat-form-field>
+                    </div>
+
+                </form>
+                <!-- / FORM  Info -->
+            </div>
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

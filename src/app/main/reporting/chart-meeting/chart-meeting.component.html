@@ -1,0 +1,14 @@
+<div class="div-parent">
+  <ngx-charts-bar-vertical-2d [view]="view" [scheme]="colorScheme" [results]="multi" [gradient]="gradient"
+    [yScaleMax]="maxValue" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showDefaultLegend"
+    [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
+    [barPadding]="barPadding" [roundDomains]="roundDomains" [legendTitle]="legendTitle" [showGridLines]="false" [showDataLabel]="true">
+    <ng-template #tooltipTemplate let-model="model">
+            <ng-container *ngFor="let translation of model.tooltipContents">
+                  <ng-container *ngIf="translation.LanguageCode == currLanguage">
+                        <h3 *ngFor="let item of translation.Contents">{{item}}</h3>
+                  </ng-container>
+            </ng-container>
+      </ng-template>
+  </ngx-charts-bar-vertical-2d>
+</div>

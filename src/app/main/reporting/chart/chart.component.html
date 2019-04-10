@@ -1,0 +1,23 @@
+<div class="pl-12 pr-12 chart-container">
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <div class="pl-12 pr-12" *ngFor="let item of model.columnAnserCharts">
+      <div></div>
+      <div fxLayout="row" fxLayoutAlign="center-center">
+        <!-- chart column -->
+        <div class="div-chart-column" *ngFor="let column of item.columnCharts; let i = index">
+          <div class="div-chart-height" [style.height.px]="totalHeightColumn">
+            <div class="chart-height-top" [style.height.px]="totalHeightColumn - column.value"></div>
+            <div class="chart-height-bottom" [style.height.px]="column.value" [style.background-color]="colorColumns[i]"></div>
+          </div>
+          <div *ngIf="i > 0" class="chart-title bdr bdb bdt" fxLayoutAlign="center center" [style.height.px]="heightCellText">{{column.textValue}}</div>
+          <div *ngIf="i > 0" class="chart-title bdr bdb" fxLayoutAlign="center center" [style.height.px]="heightCellText">{{column.timeName}}</div>
+          <div *ngIf="i == 0" class="chart-title bd" fxLayoutAlign="center center" [style.height.px]="heightCellText">{{column.textValue}}</div>
+          <div *ngIf="i == 0" class="chart-title bdl bdr bdb" fxLayoutAlign="center center" [style.height.px]="heightCellText">{{column.timeName}}</div>
+        </div>
+        <!-- end chart column -->
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center center" class="chart-title bdl bdr" [style.height.px]="heightCellText">{{item.answer}}</div>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center" class="chart-title mr-12 ml-12 bd" [style.height.px]="heightCellText">{{model.scopeName}}</div>
+</div>

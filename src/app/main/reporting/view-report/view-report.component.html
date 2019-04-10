@@ -1,0 +1,61 @@
+<div id="product" class="page-layout carded fullwidth">
+  <!-- CENTER -->
+  <div class="center">
+    <!-- HEADER -->
+    <div class="header" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+
+        <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/reporting/reporting'">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div fxLayout="column" fxLayoutAlign="start start" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          <div class="h2">
+            {{ 'meeting_report.meeting_report' | translate }}
+          </div>
+          <div class="subtitle secondary-text">
+            <!-- <span *ngIf="model.length != 0">{{model[0].firstSelectedName}} / {{model[0].secondSelectedName}}</span> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT CARD -->
+    <div class="content-card p-24">
+      <div class="tab-content p-24">
+        <div fxLayout="row wrap" *ngFor="let item of reportModel; let i = index">
+          <h2 class="mat-title"> {{ 'meeting_report.label_question' | translate }} {{i + 1}}:
+            <span *ngFor="let trans of item.Translates">
+              <span *ngIf="trans.LanguageCode == currLanguage">{{trans.Content}}</span>
+            </span>
+          </h2>
+          <div class="pl-12 div-view-report" fxLayout="row" fxFlex="100" fxLayoutAlign="end center">
+              <span *ngIf="modelRequest.timeType == 1">{{ 'meeting_report.label_year' | translate }}&emsp;</span>
+              <span *ngIf="modelRequest.timeType == 2">{{ 'meeting_report.label_session' | translate }}&emsp;</span>
+            <div class="pr-12" *ngFor="let item of textScheme; let i = index" fxLayoutAlign="center center">
+              <span class="legend-label-color" [style.background-color]="colorScheme[i]"></span>
+              <span class="legend-label-text">{{item}}</span>
+            </div>
+          </div>
+          <div class=" div-parent-charts" fusePerfectScrollbar>
+            <div class="div-parent-chart" *ngFor="let chart of item.AnswerCharts; let i = index">
+              <div *ngFor="let trans of chart.Translates">
+                <chart-meeting *ngIf="i == 0 && trans.LanguageCode == currLanguage" class="bar-chart" [model]="chart"
+                  [isFirst]="true" [numberOfColumns]="numberOfColumns" legendTitle="Years" [showDefaultLegend]="false"
+                  [showYAxis]="true" [xAxisLabel]="trans.Content" yAxisLabel="{{ 'meeting_report.yAxisLabel' | translate }}" [maxValue]="item.MaxValue">
+                </chart-meeting>
+                <chart-meeting *ngIf="i > 0 && trans.LanguageCode == currLanguage" class="bar-chart" [model]="chart"
+                  [numberOfColumns]="numberOfColumns" legendTitle="Years" [showDefaultLegend]="false" [showYAxis]="false"
+                  [xAxisLabel]="trans.Content" yAxisLabel="{{ 'meeting_report.yAxisLabel' | translate }}" [maxValue]="item.MaxValue">
+                </chart-meeting>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- / CONTENT CARD -->
+  </div>
+</div>

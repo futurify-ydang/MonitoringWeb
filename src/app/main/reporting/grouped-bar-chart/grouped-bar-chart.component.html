@@ -1,0 +1,29 @@
+<div class="div-parent">
+      <ngx-charts-bar-vertical-2d *ngIf="isVertical" [view]="view" [scheme]="colorScheme" [results]="multi"
+            [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showDefaultLegend"
+            [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+            [yAxisLabel]="yAxisLabel" [barPadding]="barPadding" [roundDomains]="roundDomains"
+            [legendTitle]="legendTitle" [showDataLabel]="showDataLabel">
+            <ng-template #tooltipTemplate let-model="model">
+                  <ng-container *ngFor="let translation of model.tooltipContents">
+                        <ng-container *ngIf="translation.LanguageCode == currLanguage">
+                              <h3 *ngFor="let item of translation.Contents">{{item}}</h3>
+                        </ng-container>
+                  </ng-container>
+            </ng-template>
+      </ngx-charts-bar-vertical-2d>
+
+      <ngx-charts-bar-horizontal-2d *ngIf="!isVertical" [view]="view" [scheme]="colorScheme" [results]="multi"
+            [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showDefaultLegend"
+            [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+            [yAxisLabel]="yAxisLabel" [barPadding]="barPadding" [roundDomains]="roundDomains"
+            [legendTitle]="legendTitle" [showDataLabel]="showDataLabel">
+            <ng-template #tooltipTemplate let-model="model">
+                  <ng-container *ngFor="let translation of model.tooltipContents">
+                        <ng-container *ngIf="translation.LanguageCode == currLanguage">
+                              <h3 *ngFor="let item of translation.Contents">{{item}}</h3>
+                        </ng-container>
+                  </ng-container>
+            </ng-template>
+      </ngx-charts-bar-horizontal-2d>
+</div>

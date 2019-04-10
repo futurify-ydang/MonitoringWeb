@@ -1,0 +1,12 @@
+/** No CSS for this example */
+.enable-link, .enable-link:hover, .enable-link:visited, .enable-link:link, .enable-link:active {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.disable-link, .disable-link:hover, .disable-link:visited, .disable-link:link, .disable-link:active {
+    cursor: not-allowed;
+    text-decoration: none;
+    color: black;
+    opacity: .65;
+}

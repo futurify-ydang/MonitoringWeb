@@ -1,0 +1,190 @@
+<div id="product" class="page-layout carded fullwidth">
+  <!-- TOP BACKGROUND -->
+  <!-- <div class="top-bg accent"></div> -->
+  <!-- / TOP BACKGROUND -->
+
+  <!-- CENTER -->
+  <div class="center">
+    <!-- HEADER -->
+    <div class="header" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+      fxLayoutAlign.gt-sm="space-between center">
+
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <div fxLayout="column" fxLayoutAlign="start start" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          <div class="h2">
+            {{ 'meeting_report.meeting_report' | translate }}
+          </div>
+        </div>
+      </div>
+      <!-- / APP TITLE -->
+
+      <!-- ADD BUTTON -->
+      <button mat-raised-button (click)="submit()" class="add-product-button mt-24 mt-md-0 mat-accent">
+        <span>{{ 'meeting_report.view_report' | translate }}</span>
+      </button>
+      <!-- / ADD BUTTON -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT CARD -->
+    <div class="content-card">
+      <div class="tab-content p-24" fusePerfectScrollbar>
+
+        <form name="reportingForm" [formGroup]="reportingForm" class="product w-100-p" fxLayout="column" fxFlex>
+          <!-- SECTION 1 -->
+          <div class="h2 pb-24">
+            {{ 'meeting_report.caption_choose_location' | translate }}
+          </div>
+          <div class="pl-24">
+            <div fxLayout="row" fxLayoutAlign="end-start">
+
+              <!-- Choose group / district / province-->
+              <mat-radio-group formControlName="firstScopeType" fxFlex="40">
+                <mat-radio-button [value]="1" class="pr-24 pb-24" [checked]="reportingForm.value?.scopeType === 1">{{
+                  'meeting_report.label_group' | translate }}
+                </mat-radio-button>
+                <mat-radio-button [value]="2" class="pr-24 pb-24" [checked]="reportingForm.value?.scopeType === 2">{{
+                  'meeting_report.label_commune' | translate }}
+                </mat-radio-button>
+                <mat-radio-button [value]="3" class="pr-24 pb-24" [checked]="reportingForm.value?.scopeType === 3">{{
+                  'meeting_report.label_district' | translate }}
+                </mat-radio-button>
+                <mat-radio-button [value]="4" class="pr-24 pb-24" [checked]="reportingForm.value?.scopeType === 4">{{
+                  'meeting_report.label_province' | translate }}
+                </mat-radio-button>
+              </mat-radio-group>
+              <!-- Choose group / district / province-->
+              <mat-radio-group formControlName="secondScopeType" fxFlex="40">
+                <mat-radio-button [value]="1" class="pr-24 pb-24" [checked]="reportingForm.value?.scopeType === 1">{{
+                  'meeting_report.label_group' | translate }}
+                </mat-radio-button>
+                <mat-radio-button [value]="2" class="pr-24 pb-24" [checked]="reportingForm.value?.scopeType === 2">{{
+                  'meeting_report.label_commune' | translate }}
+                </mat-radio-button>
+                <mat-radio-button [value]="3" class="pr-24 pb-24" [checked]="reportingForm.value?.scopeType === 3">{{
+                  'meeting_report.label_district' | translate }}
+                </mat-radio-button>
+                <mat-radio-button [value]="4" class="pr-24 pb-24" [checked]="reportingForm.value?.scopeType === 4">{{
+                  'meeting_report.label_province' | translate }}
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <!-- First and Second Select-->
+            <div fxLayout="row" fxLayoutAlign="end-start">
+
+              <mat-form-field appearance="outline" floatLabel="always" class="w-100-p pr-24" fxFlex="40">
+                <mat-label>{{ 'meeting_report.label_first' | translate }}</mat-label>
+                <mat-select *ngIf="reportingForm.value?.firstScopeType != 4" formControlName="firstSelected"
+                  placeholder="---{{ 'meeting_report.placeholder_choose_one' | translate }}---">
+                  <mat-optgroup *ngFor="let item of firstScopeTypeDropdownItems" [label]="item.title">
+                    <mat-option *ngFor="let c of item.childs" class="option-title" [value]="c.id">
+                      {{c.name}}
+                    </mat-option>
+                  </mat-optgroup>
+                </mat-select>
+                <mat-select *ngIf="reportingForm.value?.firstScopeType == 4" formControlName="firstSelected"
+                  placeholder="---{{ 'meeting_report.placeholder_choose_one' | translate }}---">
+                  <mat-option *ngFor="let item of firstScopeTypeDropdownItems" class="option-title" [value]="item.Id">
+                    {{item.ProvinceName}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" fxFlex="40">
+                <mat-label>{{ 'meeting_report.label_second' | translate }}</mat-label>
+                <mat-select *ngIf="reportingForm.value?.secondScopeType != 4" formControlName="secondSelected"
+                  placeholder="---{{ 'meeting_report.placeholder_choose_one' | translate }}---">
+                  <mat-optgroup *ngFor="let item of secondScopeTypeDropdownItems" [label]="item.title">
+                    <mat-option *ngFor="let c of item.childs" class="option-title" [value]="c.id">
+                      {{c.name}}
+                    </mat-option>
+                  </mat-optgroup>
+                </mat-select>
+                <mat-select *ngIf="reportingForm.value?.secondScopeType == 4" formControlName="secondSelected"
+                  placeholder="---{{ 'meeting_report.placeholder_choose_one' | translate }}---">
+                  <mat-option *ngFor="let item of secondScopeTypeDropdownItems" class="option-title" [value]="item.Id">
+                    {{item.ProvinceName}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <!-- END SECTION 1 -->
+
+          <!-- SECTION 2 -->
+          <div class="h2 pb-24">
+            {{ 'meeting_report.caption_choose_time' | translate }}
+          </div>
+          <div fxLayout="row" fxLayoutAlign="end-start" class="pl-24">
+            <!-- Choose year / session-->
+            <mat-radio-group formControlName="timeType">
+              <mat-radio-button [value]="1" class="pr-24 pb-24" [checked]="reportingForm.value?.timeType === 1">{{
+                'meeting_report.label_year' | translate }}
+              </mat-radio-button>
+              <mat-radio-button [value]="2" class="pr-24 pb-24" [checked]="reportingForm.value?.timeType === 2">{{
+                'meeting_report.label_session' | translate }}
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div fxLayout="row wrap" fxLayoutAlign="end-start">
+            <div fxLayout="row wrap" fxLayoutAlign="end-start" fxFlex="90">
+              <mat-checkbox #timeSelectElement *ngFor="let item of timeSelectList"
+                (change)="updateTimeSelectedList(timeSelectElement)" [value]="item"
+                [checked]="selectedTimesControl.value.includes(item)" fxFlex="20" class="pl-24 pr-24 pb-12 pt-12">
+                {{item}}
+              </mat-checkbox>
+            </div>
+          </div>
+          <mat-error *ngIf="!timeSelectList || timeSelectList.length == 0">
+            <ng-container *ngIf="reportingForm.value?.timeType === 1">
+              {{ 'meeting_report.no_years' | translate }}
+            </ng-container>
+            <ng-container *ngIf="reportingForm.value?.timeType === 2">
+              {{ 'meeting_report.no_sessions' | translate }}
+            </ng-container>
+          </mat-error>
+          <mat-error *ngIf="reportingForm.get('selectedTimes').hasError('required')">
+            {{ 'meeting_report.error_choose_time' | translate }}
+          </mat-error>
+          <!-- END SECTION 2 -->
+
+          <!-- SECTION 3 -->
+          <div class="h2 pb-24">
+            {{ 'meeting_report.caption_choose_questions' | translate }}
+          </div>
+          <div fxLayout="row wrap" fxLayoutAlign="end-start">
+            <mat-checkbox #element *ngFor="let item of questionList" (change)="updateTimeSelectedQuestions(element)"
+              [value]="item.Id" [checked]="formElementIdsControl.value.includes(item.Id)" fxFlex="100"
+              class="pl-24 pr-24 pb-12 pt-12">
+              <span *ngFor="let trans of item.Descriptions">
+                <span *ngIf="trans.LanguageCode == currLanguage">{{trans.Content}}</span>
+              </span>
+            </mat-checkbox>
+          </div>
+          <mat-error *ngIf="!questionList || questionList.length == 0">
+            {{ 'meeting_report.no_questions' | translate }}
+          </mat-error>
+          <mat-error *ngIf="reportingForm.get('formElementIds').hasError('required')">
+            {{ 'meeting_report.error_choose_question' | translate }}
+          </mat-error>
+          <!-- END SECTION 3 -->
+
+
+
+          <!-- VIEW REPORT BUTTON -->
+          <div fxLayout="row" fxLayoutAlign="end center">
+            <button mat-raised-button (click)="submit()" class="add-product-button mt-24 mt-md-0 mat-accent">
+              <span>{{ 'meeting_report.view_report' | translate }}</span>
+            </button>
+          </div>
+          <!-- END VIEW REPORT BUTTON-->
+        </form>
+      </div>
+
+    </div>
+    <!-- / CONTENT CARD -->
+  </div>
+  <!-- / CENTER -->
+</div>

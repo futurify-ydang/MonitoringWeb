@@ -1,0 +1,6 @@
+<h1 mat-dialog-title *ngIf="currentLanguage == 'en'">{{data.EnMessage}}</h1>
+<h1 mat-dialog-title *ngIf="currentLanguage == 'vi'">{{data.ViMessage}}</h1>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+    <a mat-button mat-dialog-close fxLayoutAlign="start center" (click)="onClose(false)" *ngIf="!data.OnlyOkButton">{{ 'COMMON.CLOSE' | translate }}</a>&nbsp;
+    <a mat-raised-button color="warn" class="submit-button" fxLayoutAlign="center" (click)="onClose(true)">{{ 'COMMON.OK' | translate }}</a>
+</div>

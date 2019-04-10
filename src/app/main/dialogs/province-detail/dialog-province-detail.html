@@ -1,0 +1,21 @@
+<h1 mat-dialog-title *ngIf="data.id">{{ 'province.edit_province' | translate }}</h1>
+<h1 mat-dialog-title *ngIf="!data.id">{{ 'province.new_province' | translate }}</h1>
+<div mat-dialog-content fxLayout="column">
+    <form name="groupDetaiForm" novalidate>
+        <div fxLayout="column">
+            <div fxLayout="row" fxLayoutAlign="start center" class="form-with">
+                <mat-form-field appearance="outline" floatLabel="always" fxFlex="100" class="pr-4">
+                    <mat-label>{{ 'province.province_name' | translate }}</mat-label>
+                    <input type="text" placeholder="{{ 'province.province_name' | translate }}" [formControl]="nameControl" matInput [(ngModel)]="provinceDetail.Name">
+                    <mat-error>
+                            {{ 'province.error_province_name_required' | translate }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+    <a mat-button mat-dialog-close fxLayoutAlign="start center" (click)="onClose()">{{ 'province.close' | translate }}</a>
+    <a mat-raised-button color="accent" class="submit-button" fxLayoutAlign="end center" (click)="saveProvince()">{{ 'province.save' | translate }}</a>
+</div>

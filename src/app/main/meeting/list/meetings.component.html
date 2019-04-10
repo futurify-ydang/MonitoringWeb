@@ -1,0 +1,164 @@
+<div id="meetings" class="page-layout carded fullwidth">
+
+    <!-- TOP BACKGROUND -->
+    <!-- <div class="top-bg accent"></div> -->
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header" fxLayout="row" fxLayoutAlign="space-between center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="">
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{ 'list.title' | translate}}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- ADD BUTTON -->
+            <div>
+                <button mat-raised-button [routerLink]="'/meeting/export'" class="add-product-button mat-accent mr-24" *ngIf="showExportMeeting()">
+                    <span>{{ 'list.export' | translate}}</span>
+                </button>
+                <button mat-raised-button [routerLink]="'/meeting/create'" class="add-product-button mat-accent" *ngIf="showCreateMeeting()">
+                    <span>{{ 'list.add' | translate}}</span>
+                </button>
+
+            </div>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card mat-card mat-elevation-z4 p-24 mr-24" fxLayout="column">
+
+            <div fxLayout="column" fxLayoutAlign="start start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center"
+                class="mb-20 mt-20">
+                <!-- filter by date -->
+                <div fxFlex="30">
+                    <!-- From -->
+                    <mat-form-field appearance="outline" floatLabel="always">
+                        <mat-label> {{ 'list.fromdate' | translate}}</mat-label>
+                        <input matInput name="matFromDate" [matDatepicker]='matFromDate' placeholder="{{ 'list.choosedate' | translate}}"
+                            [(ngModel)]="fromDate" (ngModelChange)='filterDate()'>
+                        <mat-datepicker-toggle matSuffix [for]="matFromDate"></mat-datepicker-toggle>
+                        <mat-datepicker #matFromDate></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="30">
+                    <!-- To -->
+                    <mat-form-field appearance="outline" floatLabel="always">
+                        <mat-label> {{ 'list.todate' | translate}}</mat-label>
+                        <input matInput name="matToDate" [matDatepicker]='matToDate' placeholder="{{ 'list.choosedate' | translate}}"
+                            [(ngModel)]="toDate" (ngModelChange)='filterDate()'>
+                        <mat-datepicker-toggle matSuffix [for]="matToDate"></mat-datepicker-toggle>
+                        <mat-datepicker #matToDate></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+                <div fxFlex="20">
+                </div>
+
+                <!-- SEARCH -->
+                <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
+                    <mat-label>{{ 'list.search' | translate}}</mat-label>
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input matInput #filter placeholder="{{ 'list.search_placeholder' | translate}}" [ngModel]="reqModelGetList.keywords"
+                            (ngModelChange)='searchKeywords(filter.value)'>
+                    </div>
+                </mat-form-field>
+                <!-- / SEARCH -->
+            </div>
+
+
+            <mat-table class="meetings-table" #table [dataSource]="dataSource" matSort [@animateStagger]="{value:'50'}">
+                <!-- ID Column -->
+                <ng-container matColumnDef="id">
+                    <mat-header-cell fxFlex="10%" *matHeaderCellDef mat-sort-header>{{ 'list.no' | translate}}</mat-header-cell>
+                    <mat-cell fxFlex="10%" *matCellDef="let i = index;">
+                        <p class="text-truncate">{{i + 1}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- group name Column -->
+                <ng-container matColumnDef="groupName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'list.groupname' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let meeting">
+                        <p class="group-name text-truncate">{{meeting.Group.Name}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- trainer name Column -->
+                <ng-container matColumnDef="trainerName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'list.trainername' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let meeting">
+                        <p class="trainer-name text-truncate">{{meeting.Trainer.FullName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- meeting date Column -->
+                <ng-container matColumnDef="meetingDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'list.meetingdate' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let meeting">
+                        <p class="meeting-date text-truncate">{{meeting.MeetingDate | date:'yyyy-MM-dd'}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- meeting duration Column -->
+                <!--<ng-container matColumnDef="duration">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'list.duration' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let meeting">
+                        <p class="text-truncate">{{(meeting.Duration)}} mins</p>
+                    </mat-cell>
+                </ng-container>-->
+
+                <!-- number Column -->
+                <ng-container matColumnDef="numberOfParticipants">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'list.number_of_participants' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let meeting">
+                        <p class="number-member text-truncate">{{(meeting.NumberOfParticipants)}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- start time Column -->
+                <ng-container matColumnDef="startTime">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'list.starttime' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let meeting">
+                        <p class="text-truncate">{{meeting.StartTime | date:'yyyy-MM-dd hh:mm'}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- end time Column -->
+                <ng-container matColumnDef="endTime">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'list.endtime' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let meeting">
+                        <p class="text-truncate">{{meeting.EndTime | date:'yyyy-MM-dd hh:mm'}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="actions" *ngIf="showActions()">
+                    <mat-header-cell *matHeaderCellDef>{{ 'list.actions' | translate}}</mat-header-cell>
+                    <mat-cell *matCellDef="let meeting">
+                        <button mat-raised-button [routerLink]="'/meeting/'+ meeting.Id" class="add-product-button mat-accent mt-24 mt-md-0" *ngIf="showEditMeeting()">
+                            <span class="action">{{ 'list.edit' | translate}}</span>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                <mat-row *matRowDef="let meeting; columns: displayedColumns;" class="product" matRipple></mat-row>
+
+            </mat-table>
+            <mat-paginator #paginator [pageIndex]="0" [pageSize]="100"></mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>
