@@ -13,7 +13,7 @@ import { MeetingComponent } from './detail/meeting.component';
 import { MeetingsComponent } from './list/meetings.component';
 import { AuthGuard } from '../auth/guard/auth.guard';
 import { Role } from 'app/common/models/role';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ExportMeetingsComponent } from './export-meetings/export-meetings.component';
 import { DialogHistoryComponent } from '../dialogs/history/dialog-history.component';
 import { MomentModule } from 'angular2-moment';
@@ -58,7 +58,7 @@ const routes = [
         ExportMeetingsComponent,
         MeetingComponent,
         MeetingsComponent,
-        DialogHistoryComponent
+        DialogHistoryComponent,
     ],
     imports     : [
         // RouterModule.forChild(routes),

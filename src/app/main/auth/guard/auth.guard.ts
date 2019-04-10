@@ -23,31 +23,32 @@ export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
     }
 
     checkLogin(url: string): boolean {
-        if (this.loginService.isLoggedIn()) {
-            return true;
-        }
+        // if (this.loginService.isLoggedIn()) {
+        //     return true;
+        // }
 
         this.loginService.redirectUrl = url;
         return false;
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        // if (this.loginService.isLoggedIn()) {
-        //     // check if route is restricted by role
-        //     if (route.data.roles && !this.loginService.hasPermission(route.data.roles)) {
-        //         // role note authorized so redirect to home page
-        //         this.router.navigate(['/my-profile/detail']);
-        //         return false;
-        //     }
+        let active = false;
+        if (this.loginService.isLoggedIn()) {
+            // check if route is restricted by role
+            if (route.data.roles && !this.loginService.hasPermission(route.data.roles)) {
+                // role note authorized so redirect to home page
+                this.router.navigate(['/my-profile/detail']);
+                active = false;
+            }
 
-        //     // authorized so return true
-        //     return true;
-        // }
-        // else{
-        //     this.router.navigate(['/auth/login']);
-        //     return false;
-        // }       
-        
-        return true;
+            // authorized so return true
+            active = true;
+        }
+        else{
+            // this.router.navigate(['/auth/login']);
+            active = false;
+        }      
+        console.log(active);
+        return false;
     }
 }

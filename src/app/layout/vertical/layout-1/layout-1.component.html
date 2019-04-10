@@ -6,7 +6,15 @@
 </ng-container>
 <!-- / SIDE PANEL -->
 
-<div id="main">
+
+<div id="main" *ngIf="!isLoggedIn">
+    <!-- CONTENT -->
+    <content></content>
+    <!-- / CONTENT -->
+</div>
+
+
+<div id="main" *ngIf="isLoggedIn">
 
     <!-- TOOLBAR: Above -->
     <ng-container *ngIf="fuseConfig.layout.toolbar.position === 'above'">

@@ -58,6 +58,11 @@ export class MeetingsComponent implements OnInit {
         private _translateService: TranslateService,
         private _route: ActivatedRoute,
     ) {
+        
+    }
+
+    ngOnInit() {
+
         this.keywordsSubject.pipe(debounceTime(500), distinctUntilChanged())
             .subscribe(res => {
                 this.reqModelGetList.keywords = res;
@@ -67,9 +72,7 @@ export class MeetingsComponent implements OnInit {
         if (this.showActions()) {
             this.displayedColumns.push('actions');
         }
-    }
 
-    ngOnInit() {
         this.currUser = this._loginService.getUser();
         console.log(this.currUser);
         // Set the navigation translations

@@ -12,7 +12,6 @@ const appRoutes: Routes = [
         children: [
             {
                 path: '',
-                component: ListComponent,
                 canActivateChild: [AuthGuard],
                 children: [
                     {

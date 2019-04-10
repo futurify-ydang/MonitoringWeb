@@ -8,13 +8,20 @@ const appRoutes: Routes = [
 
     {
         path: '', 
+        component: MeetingsComponent,
         canActivate: [AuthGuard], 
         children: [
-            { path: 'list', component: MeetingsComponent},
-            { path: 'list/:groupName', component: MeetingsComponent },
-            { path: 'export', component: MeetingsComponent },
-            { path: 'create', component: MeetingComponent },
-            { path: ':id', component: MeetingComponent }
+            {
+                path: '',
+                canActivateChild: [AuthGuard],
+                children:[
+                    { path: 'list', component: MeetingsComponent},
+                    { path: 'list/:groupName', component: MeetingsComponent },
+                    { path: 'export', component: MeetingsComponent },
+                    { path: 'create', component: MeetingComponent },
+                    { path: ':id', component: MeetingComponent }
+                ]
+            }
         ]
     },
    
